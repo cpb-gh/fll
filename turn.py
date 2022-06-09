@@ -21,18 +21,28 @@ def go_backward():
 
 def go_stop():
     pair.stop()
+    right.stop()
+    left.stop()
 
 def speed(speed):
-    set_defualt_speed(speed)
+    pair.set_default_speed(speed)
 
 def turn(deg):
     t.reset()
     m.reset_yaw_angle()
-    start_tank(30,-30)
+    pair.start_tank(30,-30)
     while m.get_yaw_angle() <= deg:
         y = m.get_yaw_angle()
-        print("turn is now at...: {}".format(y))
-    go.stop()
+        print("turn is now at:{}".format(y))
+    pair.start_tank(-15, 15)
+    while m.get_yaw_angle() => deg:
+        y = m.get_yaw_angle()
+        print("turn_is_now_at:{}".format(y))
+    pair.start_tank(7.5, -7.5)
+    while m.get_yaw_angle() <= deg:
+        y = m.get_yaw_angle()
+        print("turn is now at:{}".format(y))
+                
     y = m.get_yaw_angle()
     print("Done - turn ended at {}*.  took {} seconds. we are off by {} degress".format(y, t.now(),  y - deg))
 
