@@ -28,13 +28,13 @@ def speed(speed):
 def turn(deg):
     t.reset()
     m.reset_yaw_angle()
-    start_tank(30,-30)
+    pair.start_tank(30,-30)
     while m.get_yaw_angle() <= deg:
         y = m.get_yaw_angle()
         print("turn is now at...: {}".format(y))
-    go.stop()
+    go_stop()
     y = m.get_yaw_angle()
-    print("Done - turn ended at {}*.  took {} seconds. we are off by {} degress".format(y, t.now(),  y - deg))
+    print("Done - turn ended at {}*.took {} seconds. we are off by {} degress".format(y, t.now(),y - deg))
 
 turn(90)
 go_stop()
