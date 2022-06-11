@@ -42,9 +42,8 @@ def turn(deg):
     while m.get_yaw_angle() <= deg:
         y = m.get_yaw_angle()
         print("turn is now at:{}".format(y))
-                
     y = m.get_yaw_angle()
-    print("Done - turn ended at {}*.  took {} seconds. we are off by {} degress".format(y, t.now(),  y - deg))
+    print("Done - turn ended at {}*.took {} seconds. we are off by {} degress".format(y, t.now(),y - deg))
 
 turn(90)
 go_stop()
