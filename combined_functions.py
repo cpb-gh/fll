@@ -5,6 +5,7 @@ from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, Motio
 from spike.control import wait_for_seconds, wait_until, Timer
 from math import *
 
+
 ###
 ### BEGIN FUNCTION FROM FILE: functions/test_function.py
 ###
@@ -12,7 +13,7 @@ from math import *
 # this is a test function, don't actually use this one
 def test_function():
     print("test function")
+
 ###
 ### END FUNCTION FROM FILE: functions/test_function.py
 ###
-
