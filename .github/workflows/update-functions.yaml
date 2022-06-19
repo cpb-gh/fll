@@ -1,0 +1,12 @@
+---
+name: update-functions
+on:
+  push:
+    paths:
+      - 'functions/**'
+jobs:
+  merge-in-functions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: github/merge-in-functions.sh
