@@ -2,11 +2,24 @@
 name: update-functions
 on:
   push:
+    # update on any change to functions or any change to the way we handle actions
     paths:
       - 'functions/**'
+      - 'github/**'
 jobs:
   merge-in-functions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: github/merge-in-functions.sh
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Merge functions
+        run: github/merge-in-functions.sh
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: proritobot
+          author_email: proritos@googlegroups.com
+          message: 'new functions merged'
+          add: combined_functions.py
