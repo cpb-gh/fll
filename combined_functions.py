@@ -248,3 +248,12 @@ def BounceEaseInOut(t):
 ###
 ### END FUNCTION FROM FILE: functions/easing_functions.py
 ###
+
+###
+### BEGIN FUNCTION FROM FILE: functions/motor_rotation_functions
+###
+
+
+###
+### END FUNCTION FROM FILE: functions/motor_rotation_functions
+###
