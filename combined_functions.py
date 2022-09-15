@@ -5,6 +5,7 @@ from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, Motio
 from spike.control import wait_for_seconds, wait_until, Timer
 import math
 import time
+import hub
 
 
 ###
