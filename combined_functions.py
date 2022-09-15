@@ -250,6 +250,28 @@ def BounceEaseInOut(t):
 ###
 
 ###
+### BEGIN FUNCTION FROM FILE: functions/motor_rotation_functions.py
+###
+
+def motor_to_degrees(degrees=90, power=100, port='A'):
+    hub_motor = get_port_by_letter(port)
+    hub_motor.preset(0)
+    hub_motor.pwm(power)
+    degrees_wanted = degrees
+
+    keep_spinning = True
+    while keep_spinning:
+        speed, relative_degrees, absolute_degrees, pwm = hub_motor.get()
+        if relative_degrees >= degrees_wanted:
+            keep_spinning = False 
+        if keep_spinning == False:
+            hub_motor.brake()
+
+###
+### END FUNCTION FROM FILE: functions/motor_rotation_functions.py
+###
+
+###
 ### BEGIN FUNCTION FROM FILE: functions/utillity_functions.py
 ###
 
@@ -269,13 +291,4 @@ def get_port_by_letter(port):
 
 ###
 ### END FUNCTION FROM FILE: functions/utillity_functions.py
-###
-
-###
-### BEGIN FUNCTION FROM FILE: functions/motor_rotation_functions
-###
-
-
-###
-### END FUNCTION FROM FILE: functions/motor_rotation_functions
 ###
