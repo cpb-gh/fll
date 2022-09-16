@@ -255,7 +255,7 @@ def BounceEaseInOut(t):
 ###
 
 def motor_to_degrees(degrees=90, power=100, port='A'):
-    hub_motor = get_port_by_letter(port)
+    hub_motor = get_motor_by_letter(port)
     hub_motor.preset(0)
     hub_motor.pwm(power)
     degrees_wanted = degrees
