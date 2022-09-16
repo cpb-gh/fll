@@ -1,4 +1,5 @@
 ### FUNCTION START
+
 def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
     from random import random
     cs_one = ColorSensor(color_sensor_one)
@@ -43,4 +44,5 @@ def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20
     # turn off the lights at the end of the party
     cs_one.light_up_all(0)
     cs_two.light_up_all(0)
+
 ### FUNCTION END
