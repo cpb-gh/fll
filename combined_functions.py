@@ -273,6 +273,15 @@ def motor_to_degrees(degrees=90, power=100, port='A'):
 ###
 
 ###
+### BEGIN FUNCTION FROM FILE: functions/party_mode.py
+###
+
+
+###
+### END FUNCTION FROM FILE: functions/party_mode.py
+###
+
+###
 ### BEGIN FUNCTION FROM FILE: functions/utillity_functions.py
 ###
 
