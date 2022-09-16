@@ -1,5 +1,5 @@
 ### FUNCTION START
-def get_port_by_letter(port):
+def get_motor_by_letter(port):
     if port ==  'A':
         return hub.port.A.motor
     if port == 'B':
