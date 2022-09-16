@@ -329,7 +329,7 @@ def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20
 ### BEGIN FUNCTION FROM FILE: functions/utillity_functions.py
 ###
 
-def get_port_by_letter(port):
+def get_motor_by_letter(port):
     if port ==  'A':
         return hub.port.A.motor
     if port == 'B':
