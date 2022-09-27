@@ -3,6 +3,19 @@ from spike.control import wait_for_seconds, wait_until, Timer
 from math import *
 import hub  
 
+color_sensor_one = ColorSensor('C')
+color_sensor_two = ColorSensor('D')
+ 
+def sesnsed_black():
+   color_one = color_sensor_one.get_color()
+   color_two = color_sensor_two.get_color()
+   if color_one = 'black' and color_two = 'black':
+       return True
+   else:
+       return False
+
+
+
 def get_motor_by_letter(port):
     if port =='A':
         return hub.port.A.motor
