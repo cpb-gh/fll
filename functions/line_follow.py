@@ -2,15 +2,18 @@ from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, Motio
 from spike.control import wait_for_seconds, wait_until, Timer
 from math import *
 
-### function_start
+### FUNCTION START
 def get_speed( low_speed, high_speed, pct ):
     return low_speed+((high_speed-low_speed)*pct)
 
 def ease(easetype, pct):
     return pct
 
-def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', easename=None, degrees=1000 motorLeftletter = 'A', motorRightletter='B'):
-    motor_pair = MotorPair('A', 'B')
+def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", 
+                 stopIf=None, stopMode='brake', easename=None, degrees=1000,
+                 motorLeftletter = 'A', motorRightletter='B'):
+    
+    motor_pair = MotorPair(motorLeftletter, motorRightletter)
     motor1 = Motor(notorLeftletter)
     motor2 = Motor(motorRightletter)
 
@@ -57,5 +60,6 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
 
         if stop == True and stopMode is not None:
             motor_pair.stop()
-### function_end
+ 
+### FUNCTION END
 
