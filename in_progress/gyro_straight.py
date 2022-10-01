@@ -38,8 +38,16 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
     motor_pair.start_tank(start_power, start_power)
     while True:
         speed, relative_degrees, absolute_degrees, pwm = motor_right.get()
-        #print(speed, relative_degrees, absolute_degrees, pwm)
         if also_stop_if() == True or relative_degrees >= degrees:
-            motor_pair.stop()
+            if motor_stop_mode == 'BRAKE':
+                motor_right.brake()
+                motor_left.brake()
+            elif motor_stop_mode == 'HOLD':
+                motor_right.hold()
+                motor_left.hold()
+            elif motor_stop_mode == 'FLOAT':
+                motor_right.float()
+                motor_left.float()
+            else:
+                print("check your spelling of your motor_stop_mode:", motor_stop_mode )
             return
-        #wait_for_seconds(.5)
