@@ -33,3 +33,8 @@ for file in $(find functions/ -type f); do
   echo "### END FUNCTION FROM FILE: $file" >> $FUNCTIONS_FILE
   echo "###" >> $FUNCTIONS_FILE
 done
+
+for file in $(find functions/ -type f); do
+  function_def=$(grep ^def $file)
+  echo "# $function_def" >> $FUNCTIONS_FILE
+done
