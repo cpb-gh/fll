@@ -1,7 +1,7 @@
-### FUNCTION START
 
 from spike import PrimeHub,MotorPair
 
+### FUNCTION START
 def get_speed(start, end, percent):
     return int ( start + (end - start)*percent )
 
