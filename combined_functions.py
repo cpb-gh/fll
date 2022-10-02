@@ -543,3 +543,46 @@ def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20
 ###
 ### END FUNCTION FROM FILE: functions/party_mode.py
 ###
+# def get_speed( low_speed, high_speed, pct ):
+def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", 
+# def LinearInOut(t):
+def QuadEaseInOut(t):
+def QuadEaseIn(t):
+def QuadEaseOut(t):
+def CubicEaseIn(t):
+def CubicEaseOut(t):
+def CubicEaseInOut(t):
+def QuarticEaseIn(t):
+def QuarticEaseOut(t):
+def QuarticEaseInOut(t):
+def QuinticEaseIn(t):
+def QuinticEaseOut(t):
+def QuinticEaseInOut(t):
+def SineEaseIn(t):
+def SineEaseOut(t):
+def SineEaseInOut(t):
+def CircularEaseIn(t):
+def CircularEaseOut(t):
+def CircularEaseInOut(t):
+def ExponentialEaseIn(t):
+def ExponentialEaseOut(t):
+def ExponentialEaseInOut(t):
+def ElasticEaseIn(t):
+def ElasticEaseOut(t):
+def ElasticEaseInOut(t):
+def BackEaseIn(t):
+def BackEaseOut(t):
+def BackEaseInOut(t):
+def BounceEaseIn(t):
+def BounceEaseOut(t):
+def BounceEaseInOut(t):
+# def test_function():
+# def get_motor_by_letter(port):
+def sensed_black(letter_one = 'C', letter_two = 'D'):
+def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing='LINEAR', motor_stop_mode='BRAKE', also_stop_if = None ):
+# def start_run( color_sensor_letter = 'C', delay = 1):
+# def get_motor_by_letter(port):
+# def get_speed(start, end, percent):
+def turn_function(degrees=90, ease=None, stoptype='brake',
+# def motor_to_degrees(degrees=90, power=100, port='A'):
+# def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
