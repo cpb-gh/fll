@@ -3,16 +3,6 @@ from spike.control import wait_for_seconds, wait_until, Timer
 from math import *
 import hub
 
-def sensed_black(letter_one = 'C', letter_two = 'D'):
-    color_sensor_one = ColorSensor(letter_one)
-    color_sensor_two = ColorSensor(letter_two)
-    color_one = color_sensor_one.get_color()
-    color_two = color_sensor_two.get_color()
-    if color_one == 'black' and color_two == 'black':
-        return True
-    else:
-        return False
-
 def get_motor_by_letter(port):
     if port =='A':
         return hub.port.A.motor
@@ -26,6 +16,17 @@ def get_motor_by_letter(port):
         return hub.port.E.motor
     if port == 'F':
         return hub.port.F.motor
+
+### FUNCTION START
+def sensed_black(letter_one = 'C', letter_two = 'D'):
+    color_sensor_one = ColorSensor(letter_one)
+    color_sensor_two = ColorSensor(letter_two)
+    color_one = color_sensor_one.get_color()
+    color_two = color_sensor_two.get_color()
+    if color_one == 'black' and color_two == 'black':
+        return True
+    else:
+        return False
 
 def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing='LINEAR', motor_stop_mode='BRAKE', also_stop_if = None ):
     motor_pair = MotorPair(left_motor_letter, right_motor_letter)
@@ -51,3 +52,4 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
             else:
                 print("check your spelling of your motor_stop_mode:", motor_stop_mode )
             return
+### FUNCTION END
