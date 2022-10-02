@@ -379,8 +379,6 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             print ('NONE')
             status_light.off()
 
-start_run(color_sensor_letter = 'D', delay = 5)
-
 
 ###
 ### END FUNCTION FROM FILE: functions/start_run.py
