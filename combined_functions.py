@@ -9,6 +9,69 @@ import hub
 
 
 ###
+### BEGIN FUNCTION FROM FILE: functions/line_follow.py
+###
+
+
+def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", 
+                 stopIf=None, stopMode='brake', ease = None, degrees=1000,
+                 motorLeftletter = 'A', motorRightletter='B'):
+    
+    motor_pair = MotorPair(motorLeftletter, motorRightletter)
+    motor1 = Motor(motorLeftletter)
+    motor2 = Motor(motorRightletter)
+
+    color = ColorSensor(sensorLetter)
+    stop = False
+    integral = 0
+    lastError = 0
+    
+    motor1.set_degrees_counted(0)
+    motor2.set_degrees_counted(0)
+    if stopMode is not None:
+        motor_pair.set_stop_action(stopMode)
+    while stop == False:
+        mdeg1 = motor1.get_degrees_counted()
+        mdeg2 = motor2.get_degrees_counted()
+        motordeg = (abs(mdeg1) + abs(mdeg2))/ 2
+        if motordeg >= degrees:
+            stop = True
+
+        pct = motordeg/degrees 
+        #if ease is not None:
+        #    pct = ease( pct )
+        
+        speedy = get_speed( Sspeed, Espeed, pct )
+        # print(  'speedy', speedy )
+
+
+
+        speed = speedy
+
+        error = color.get_reflected_light() - 50
+        P_fix = error * 0.3
+
+        integral = integral + error
+        
+        I_fix = integral * 0.001
+
+        derivative = error - lastError
+        lastError = error
+        D_fix = derivative * 1
+
+        correction = P_fix+I_fix+D_fix
+
+        motor_pair.start_tank_at_power(int(speed-correction), int(speed+correction))
+
+        if stop == True and stopMode is not None:
+            motor_pair.stop()
+ 
+
+###
+### END FUNCTION FROM FILE: functions/line_follow.py
+###
+
+###
 ### BEGIN FUNCTION FROM FILE: functions/easing_functions.py
 ###
 
@@ -300,6 +363,67 @@ def get_motor_by_letter(port):
 
 ###
 ### END FUNCTION FROM FILE: functions/utillity_functions.py
+###
+
+###
+### BEGIN FUNCTION FROM FILE: functions/turn_code.py
+###
+
+def get_speed(start, end, percent):
+    return int ( start + (end - start)*percent )
+
+
+
+def turn_function(degrees=90, ease=None, stoptype='brake',
+    startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B',
+    turntype='both'):
+
+    neg = degrees<0
+
+    hub = PrimeHub()
+
+
+    hub.motion_sensor.reset_yaw_angle()
+    motors = MotorPair(motorletterleft, motorletterright)
+    keep_spinning = True
+    while keep_spinning == True:
+        degrees_now= hub.motion_sensor.get_yaw_angle()
+        if neg and degrees_now <= degrees :
+            keep_spinning = False
+        elif not neg and degrees_now >= degrees :
+            keep_spinning = False
+
+        if keep_spinning:
+            pct = degrees_now/degrees
+  
+            if ease is not None:
+                pct = ease(pct)
+            speed = get_speed (startspeed, endspeed, pct)
+
+            if turntype is 'both':
+                if neg:
+                    motors.start_tank_at_power(-speed, speed)
+                else:
+                    motors.start_tank_at_power(speed, -speed)
+            elif turntype is 'left':
+                if neg:
+                    motors.start_tank_at_power(-speed, 0)
+                else:
+                    motors.start_tank_at_power(speed, 0)
+            elif turntype is 'right':
+                if neg:
+                    motors.start_tank_at_power(0,speed)
+                else:
+                    motors.start_tank_at_power(0,-speed)
+
+
+    if stoptype is not None:
+        motors.set_stop_action( stoptype )
+        motors.stop()
+
+
+###
+### END FUNCTION FROM FILE: functions/turn_code.py
 ###
 
 ###
