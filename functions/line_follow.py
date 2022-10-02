@@ -14,7 +14,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D",
                  motorLeftletter = 'A', motorRightletter='B'):
     
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
-    motor1 = Motor(notorLeftletter)
+    motor1 = Motor(motorLeftletter)
     motor2 = Motor(motorRightletter)
 
     color = ColorSensor(sensorLetter)
