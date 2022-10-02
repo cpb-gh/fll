@@ -1,7 +1,7 @@
 from spike import PrimeHub, LightMatrix, Button, StatusLight, ColorSensor, Speaker
 from spike.control import wait_for_seconds
 
-
+### FUNCTION START
 
 def start_run( color_sensor_letter = 'C', delay = 1):
     color = ColorSensor(color_sensor_letter)
@@ -22,3 +22,5 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             status_light.off()
 
 start_run(color_sensor_letter = 'D', delay = 5)
+
+### FUNCTION END
