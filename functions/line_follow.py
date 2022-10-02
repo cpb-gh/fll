@@ -6,11 +6,9 @@ from math import *
 def get_speed( low_speed, high_speed, pct ):
     return low_speed+((high_speed-low_speed)*pct)
 
-def ease(easetype, pct):
-    return pct
 
 def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", 
-                 stopIf=None, stopMode='brake', easename=None, degrees=1000,
+                 stopIf=None, stopMode='brake', ease = None, degrees=1000,
                  motorLeftletter = 'A', motorRightletter='B'):
     
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
@@ -34,9 +32,10 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D",
             stop = True
 
         pct = motordeg/degrees 
-
-        Epct = ease( easename, pct )
-        speedy = get_speed( Sspeed, Espeed, Epct )
+        if ease is not None:
+            pct = ease( pct )
+        
+        speedy = get_speed( Sspeed, Espeed, pct )
         # print(  'speedy', speedy )
 
 
