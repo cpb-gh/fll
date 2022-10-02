@@ -21,6 +21,7 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             print ('NONE')
             status_light.off()
 
+### FUNCTION END
 start_run(color_sensor_letter = 'D', delay = 5)
 
-### FUNCTION END
+
