@@ -9,18 +9,6 @@ import hub
 
 
 ###
-### BEGIN FUNCTION FROM FILE: functions/test_function.py
-###
-
-# this is a test function, don't actually use this one
-def test_function():
-    print("test function")
-
-###
-### END FUNCTION FROM FILE: functions/test_function.py
-###
-
-###
 ### BEGIN FUNCTION FROM FILE: functions/easing_functions.py
 ###
 
@@ -251,6 +239,70 @@ def BounceEaseInOut(t):
 ###
 
 ###
+### BEGIN FUNCTION FROM FILE: functions/test_function.py
+###
+
+# this is a test function, don't actually use this one
+def test_function():
+    print("test function")
+
+###
+### END FUNCTION FROM FILE: functions/test_function.py
+###
+
+###
+### BEGIN FUNCTION FROM FILE: functions/start_run.py
+###
+
+
+def start_run( color_sensor_letter = 'C', delay = 1):
+    color = ColorSensor(color_sensor_letter)
+    status_light = StatusLight()
+    speaker = Speaker()
+    while True:
+        the_color = color.get_color()
+        if the_color == 'red':
+            print ( 'Detected red')
+            status_light.on('red')
+            speaker.beep(60, delay)
+        elif the_color == 'blue':
+            print ('Detected blueeee')
+            status_light.on('blue')
+            speaker.beep(100, delay)
+        elif the_color == None:
+            print ('NONE')
+            status_light.off()
+
+start_run(color_sensor_letter = 'D', delay = 5)
+
+
+###
+### END FUNCTION FROM FILE: functions/start_run.py
+###
+
+###
+### BEGIN FUNCTION FROM FILE: functions/utillity_functions.py
+###
+
+def get_motor_by_letter(port):
+    if port ==  'A':
+        return hub.port.A.motor
+    if port == 'B':
+        return hub.port.B.motor
+    if port == 'C':
+        return hub.port.C.motor
+    if port == 'D':
+        return hub.port.D.motor
+    if port == 'E':
+        return hub.port.E.motor
+    if port == 'F':
+        return hub.port.F.motor
+
+###
+### END FUNCTION FROM FILE: functions/utillity_functions.py
+###
+
+###
 ### BEGIN FUNCTION FROM FILE: functions/motor_rotation_functions.py
 ###
 
@@ -325,26 +377,4 @@ def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20
 
 ###
 ### END FUNCTION FROM FILE: functions/party_mode.py
-###
-
-###
-### BEGIN FUNCTION FROM FILE: functions/utillity_functions.py
-###
-
-def get_motor_by_letter(port):
-    if port ==  'A':
-        return hub.port.A.motor
-    if port == 'B':
-        return hub.port.B.motor
-    if port == 'C':
-        return hub.port.C.motor
-    if port == 'D':
-        return hub.port.D.motor
-    if port == 'E':
-        return hub.port.E.motor
-    if port == 'F':
-        return hub.port.F.motor
-
-###
-### END FUNCTION FROM FILE: functions/utillity_functions.py
 ###
