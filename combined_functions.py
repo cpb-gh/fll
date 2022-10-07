@@ -9,69 +9,6 @@ import hub
 
 
 ###
-### BEGIN FUNCTION FROM FILE: functions/line_follow.py
-###
-
-
-def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", 
-                 stopIf=None, stopMode='brake', ease = None, degrees=1000,
-                 motorLeftletter = 'A', motorRightletter='B'):
-    
-    motor_pair = MotorPair(motorLeftletter, motorRightletter)
-    motor1 = Motor(motorLeftletter)
-    motor2 = Motor(motorRightletter)
-
-    color = ColorSensor(sensorLetter)
-    stop = False
-    integral = 0
-    lastError = 0
-    
-    motor1.set_degrees_counted(0)
-    motor2.set_degrees_counted(0)
-    if stopMode is not None:
-        motor_pair.set_stop_action(stopMode)
-    while stop == False:
-        mdeg1 = motor1.get_degrees_counted()
-        mdeg2 = motor2.get_degrees_counted()
-        motordeg = (abs(mdeg1) + abs(mdeg2))/ 2
-        if motordeg >= degrees:
-            stop = True
-
-        pct = motordeg/degrees 
-        #if ease is not None:
-        #    pct = ease( pct )
-        
-        speedy = get_speed( Sspeed, Espeed, pct )
-        # print(  'speedy', speedy )
-
-
-
-        speed = speedy
-
-        error = color.get_reflected_light() - 50
-        P_fix = error * 0.3
-
-        integral = integral + error
-        
-        I_fix = integral * 0.001
-
-        derivative = error - lastError
-        lastError = error
-        D_fix = derivative * 1
-
-        correction = P_fix+I_fix+D_fix
-
-        motor_pair.start_tank_at_power(int(speed-correction), int(speed+correction))
-
-        if stop == True and stopMode is not None:
-            motor_pair.stop()
- 
-
-###
-### END FUNCTION FROM FILE: functions/line_follow.py
-###
-
-###
 ### BEGIN FUNCTION FROM FILE: functions/easing_functions.py
 ###
 
@@ -314,33 +251,55 @@ def test_function():
 ###
 
 ###
-### BEGIN FUNCTION FROM FILE: functions/start_run.py
+### BEGIN FUNCTION FROM FILE: functions/gyro_straight.py
 ###
 
 
-def start_run( color_sensor_letter = 'C', delay = 1):
-    color = ColorSensor(color_sensor_letter)
-    status_light = StatusLight()
-    speaker = Speaker()
+def sensed_black(letter_one = 'C', letter_two = 'D'):
+    color_sensor_one = ColorSensor(letter_one)
+    color_sensor_two = ColorSensor(letter_two)
+    color_one = color_sensor_one.get_color()
+    color_two = color_sensor_two.get_color()
+    if color_one == 'black' and color_two == 'black':
+        return True
+    else:
+        return False
+
+def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode='BRAKE', also_stop_if = None ):
+    motor_pair = MotorPair(left_motor_letter, right_motor_letter)
+    motor_left = get_motor_by_letter(left_motor_letter)
+    motor_right = get_motor_by_letter(right_motor_letter)
+    # motor_right.preset(0) will reset the relative degrees because otherwise the second time you run this function the relative degrees will start where it left off last time
+    motor_right.preset(0)
+    speed, relative_degrees, absolute_degrees, pwm = motor_right.get()
+    #easing stuff.
+    pct_degrees = 0
+    print("Start:", speed, relative_degrees, absolute_degrees, pwm)
+    motor_pair.start_tank(start_power, start_power)
+    #motor stop mode
     while True:
-        the_color = color.get_color()
-        if the_color == 'red':
-            print ( 'Detected red')
-            status_light.on('red')
-            speaker.beep(60, delay)
-        elif the_color == 'blue':
-            print ('Detected blueeee')
-            status_light.on('blue')
-            speaker.beep(100, delay)
-        elif the_color == None:
-            print ('NONE')
-            status_light.off()
-
-start_run(color_sensor_letter = 'D', delay = 5)
-
+        speed, relative_degrees, absolute_degrees, pwm = motor_right.get()
+        pct_degrees = relative_degrees / degrees
+        pct_power = easing(pct_degrees)
+        act_power = int(pct_power * (end_power - start_power) + start_power)
+        motor_pair.start_tank(act_power, act_power)
+        if also_stop_if() == True or relative_degrees >= degrees:
+            # FIXME: look at the line_follow function and use those braking methods instead so we are consistent - we can use a MotorPair object here
+            if motor_stop_mode == 'BRAKE':
+                motor_right.brake()
+                motor_left.brake()
+            elif motor_stop_mode == 'HOLD':
+                motor_right.hold()
+                motor_left.hold()
+            elif motor_stop_mode == 'FLOAT':
+                motor_right.float()
+                motor_left.float()
+            else:
+                print("check your spelling of your motor_stop_mode:", motor_stop_mode )
+            return
 
 ###
-### END FUNCTION FROM FILE: functions/start_run.py
+### END FUNCTION FROM FILE: functions/gyro_straight.py
 ###
 
 ###
@@ -363,67 +322,6 @@ def get_motor_by_letter(port):
 
 ###
 ### END FUNCTION FROM FILE: functions/utillity_functions.py
-###
-
-###
-### BEGIN FUNCTION FROM FILE: functions/turn_code.py
-###
-
-def get_speed(start, end, percent):
-    return int ( start + (end - start)*percent )
-
-
-
-def turn_function(degrees=90, ease=None, stoptype='brake',
-    startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B',
-    turntype='both'):
-
-    neg = degrees<0
-
-    hub = PrimeHub()
-
-
-    hub.motion_sensor.reset_yaw_angle()
-    motors = MotorPair(motorletterleft, motorletterright)
-    keep_spinning = True
-    while keep_spinning == True:
-        degrees_now= hub.motion_sensor.get_yaw_angle()
-        if neg and degrees_now <= degrees :
-            keep_spinning = False
-        elif not neg and degrees_now >= degrees :
-            keep_spinning = False
-
-        if keep_spinning:
-            pct = degrees_now/degrees
-  
-            if ease is not None:
-                pct = ease(pct)
-            speed = get_speed (startspeed, endspeed, pct)
-
-            if turntype is 'both':
-                if neg:
-                    motors.start_tank_at_power(-speed, speed)
-                else:
-                    motors.start_tank_at_power(speed, -speed)
-            elif turntype is 'left':
-                if neg:
-                    motors.start_tank_at_power(-speed, 0)
-                else:
-                    motors.start_tank_at_power(speed, 0)
-            elif turntype is 'right':
-                if neg:
-                    motors.start_tank_at_power(0,speed)
-                else:
-                    motors.start_tank_at_power(0,-speed)
-
-
-    if stoptype is not None:
-        motors.set_stop_action( stoptype )
-        motors.stop()
-
-
-###
-### END FUNCTION FROM FILE: functions/turn_code.py
 ###
 
 ###
