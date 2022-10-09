@@ -15,10 +15,36 @@ import time
 import hub
 """
 
-with open(FUNCTIONS_FILE, 'w') as f:
-    f.write(HEADER)
+with open(FUNCTIONS_FILE, 'w') as ff:
+    ff.write(HEADER)
 
-files=os.listdir('functions').sort()
-for file in files:
-    if fnmatch.fnmatch(file, '*.py'):
-        print(file)
+files=os.listdir('functions')
+files.sort()
+
+with open(FUNCTIONS_FILE, 'a') as ff:
+    documentation_lines = []
+    for function_filename in files:
+        write_to_combined_file = False
+        if fnmatch.fnmatch(function_filename, '*.py'):
+            with open(f'functions/{function_filename}', 'r') as function_file:
+                line = function_file.readline()
+                ff.write(f"""
+
+###
+### BEGIN FUNCTION FROM FILE: {function_filename}
+###
+
+""")
+                while line:                
+                    if "FUNCTION START" in line:
+                        write_to_combined_file = True
+                    elif "FUNCTION END" in line:
+                        write_to_combined_file = False
+                    elif write_to_combined_file:
+                        ff.write(line)
+                    if write_to_combined_file and line.startswith('def '):
+                        documentation_lines.append(f'({function_filename}) {line}')
+                    line = function_file.readline()
+    ff.write('\n###\n### FUNCTION DEFINITIONS\n###\n')
+    for d in documentation_lines:
+        ff.write(f'# {d}')
