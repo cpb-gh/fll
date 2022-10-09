@@ -7,6 +7,11 @@ Linear
 def LinearInOut(t):
     return t
 
+def ExponentialEaseIn(t):
+    if t == 0:
+        return 0
+    return math.pow(2, 10 * (t - 1))
+
 def get_motor_by_letter( motor_letter ):
     if motor_letter == 'A':
         return hub.port.A.motor
