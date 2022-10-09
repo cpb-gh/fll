@@ -10,6 +10,39 @@ import hub
 
 
 ###
+### BEGIN FUNCTION FROM FILE: control_attachments.py
+###
+
+def control_attachments(start_speed=40, end_speed=100, ease=LinearInOut, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
+
+    hub_motor = get_motor_by_letter( motor_letter )
+    hub_motor.preset( 0 )
+    hub_motor.pwm( start_speed )
+
+    keep_spinning = True
+
+    while keep_spinning:
+        speed, degrees_now, ignore_this, pwm = hub_motor.get( )
+
+        pct_to_degrees = degrees_now / degrees_wanted
+        print( 'degrees', degrees_now, pct_to_degrees )
+
+        speed=start_speed+ease(pct_to_degrees)*(end_speed-start_speed)
+        hub_motor.pwm(speed)
+
+        if degrees_now >= degrees_wanted or also_end_if==True:
+            keep_spinning = False
+
+        if keep_spinning == False:
+            if motor_stop_mode == 'BRAKE':
+                hub_motor.brake( )
+            elif motor_stop_mode == 'FLOAT':
+                hub_motor.float( )
+            elif motor_stop_mode == 'HOLD':
+                hub_motor.hold( )
+
+
+###
 ### BEGIN FUNCTION FROM FILE: easing_functions.py
 ###
 
@@ -241,6 +274,19 @@ def BounceEaseInOut(t):
 ###
 
 
+def coast(motor_pair):
+    motor_pair.set_stop_action('coast')
+    motor_pair.stop()
+
+def hold(motor_pair):
+    motor_pair.set_stop_action('hold')
+    motor_pair.stop()
+
+def brake(motor_pair):
+    motor_pair.set_stop_action('brake')
+    motor_pair.stop()
+
+
 def sensed_black(letter_one = 'C', letter_two = 'D'):
     color_sensor_one = ColorSensor(letter_one)
     color_sensor_two = ColorSensor(letter_two)
@@ -251,8 +297,9 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
     else:
         return False
 
-def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode='BRAKE', also_stop_if = lambda: False  ):
+def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode = brake, also_stop_if = lambda: False ):
     motor_pair = MotorPair(left_motor_letter, right_motor_letter)
+    color = ColorSensor('C')
     motor_left = get_motor_by_letter(left_motor_letter)
     motor_right = get_motor_by_letter(right_motor_letter)
     # motor_right.preset(0) will reset the relative degrees because otherwise the second time you run this function the relative degrees will start where it left off last time
@@ -271,17 +318,7 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
         motor_pair.start_tank(act_power, act_power)
         if also_stop_if() == True or relative_degrees >= degrees:
             # FIXME: look at the line_follow function and use those braking methods instead so we are consistent - we can use a MotorPair object here
-            if motor_stop_mode == 'BRAKE':
-                motor_right.brake()
-                motor_left.brake()
-            elif motor_stop_mode == 'HOLD':
-                motor_right.hold()
-                motor_left.hold()
-            elif motor_stop_mode == 'FLOAT':
-                motor_right.float()
-                motor_left.float()
-            else:
-                print("check your spelling of your motor_stop_mode:", motor_stop_mode )
+            motor_stop_mode(motor_pair)
             return
 
 
@@ -529,6 +566,7 @@ def get_motor_by_letter(port):
 ###
 ### FUNCTION DEFINITIONS
 ###
+# (control_attachments.py) def control_attachments(start_speed=40, end_speed=100, ease=LinearInOut, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
 # (easing_functions.py) def LinearInOut(t):
 # (easing_functions.py) def QuadEaseInOut(t):
 # (easing_functions.py) def QuadEaseIn(t):
@@ -560,8 +598,11 @@ def get_motor_by_letter(port):
 # (easing_functions.py) def BounceEaseIn(t):
 # (easing_functions.py) def BounceEaseOut(t):
 # (easing_functions.py) def BounceEaseInOut(t):
+# (gyro_straight.py) def coast(motor_pair):
+# (gyro_straight.py) def hold(motor_pair):
+# (gyro_straight.py) def brake(motor_pair):
 # (gyro_straight.py) def sensed_black(letter_one = 'C', letter_two = 'D'):
-# (gyro_straight.py) def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode='BRAKE', also_stop_if = lambda: False  ):
+# (gyro_straight.py) def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode = brake, also_stop_if = lambda: False ):
 # (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", 
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
