@@ -317,6 +317,7 @@ def test_function():
 ### BEGIN FUNCTION FROM FILE: functions/gyro_straight.py
 ###
 
+
 def sensed_black(letter_one = 'C', letter_two = 'D'):
     color_sensor_one = ColorSensor(letter_one)
     color_sensor_two = ColorSensor(letter_two)
@@ -327,18 +328,26 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
     else:
         return False
 
-def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing='LINEAR', motor_stop_mode='BRAKE', also_stop_if = None ):
+def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode='BRAKE', also_stop_if = None ):
     motor_pair = MotorPair(left_motor_letter, right_motor_letter)
     motor_left = get_motor_by_letter(left_motor_letter)
     motor_right = get_motor_by_letter(right_motor_letter)
-    # motor_right.preset(0) will reset the relative degrees because otherwise the second time you run this function the relative degrees will start where it left off last time 
+    # motor_right.preset(0) will reset the relative degrees because otherwise the second time you run this function the relative degrees will start where it left off last time
     motor_right.preset(0)
     speed, relative_degrees, absolute_degrees, pwm = motor_right.get()
+    #easing stuff.
+    pct_degrees = 0
     print("Start:", speed, relative_degrees, absolute_degrees, pwm)
     motor_pair.start_tank(start_power, start_power)
+    #motor stop mode
     while True:
         speed, relative_degrees, absolute_degrees, pwm = motor_right.get()
+        pct_degrees = relative_degrees / degrees
+        pct_power = easing(pct_degrees)
+        act_power = int(pct_power * (end_power - start_power) + start_power)
+        motor_pair.start_tank(act_power, act_power)
         if also_stop_if() == True or relative_degrees >= degrees:
+            # FIXME: look at the line_follow function and use those braking methods instead so we are consistent - we can use a MotorPair object here
             if motor_stop_mode == 'BRAKE':
                 motor_right.brake()
                 motor_left.brake()
