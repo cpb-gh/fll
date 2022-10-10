@@ -27,8 +27,10 @@ def get_motor_by_letter( motor_letter ):
         return hub.port.F.motor
 
 ### FUNCTION START
-def control_attachments(start_speed=40, end_speed=100, ease=LinearInOut, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
-
+# NOTE - default parameters are evaluated at compile time so we need to set east to "None" by default and then if it is "None" set our actual default "LinearInOut"
+def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
+    if ease is None:
+        ease = LinearInOut
     hub_motor = get_motor_by_letter( motor_letter )
     hub_motor.preset( 0 )
     hub_motor.pwm( start_speed )
