@@ -13,8 +13,10 @@ import hub
 ### BEGIN FUNCTION FROM FILE: control_attachments.py
 ###
 
-def control_attachments(start_speed=40, end_speed=100, ease=LinearInOut, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
-
+# NOTE - default parameters are evaluated at compile time so we need to set east to "None" by default and then if it is "None" set our actual default "LinearInOut"
+def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
+    if ease is None:
+        ease = LinearInOut
     hub_motor = get_motor_by_letter( motor_letter )
     hub_motor.preset( 0 )
     hub_motor.pwm( start_speed )
@@ -297,7 +299,10 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
     else:
         return False
 
-def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode = brake, also_stop_if = lambda: False ):
+# NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
+def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
+    if easing is None:
+        easing = LinearInOut
     motor_pair = MotorPair(left_motor_letter, right_motor_letter)
     color = ColorSensor('C')
     motor_left = get_motor_by_letter(left_motor_letter)
@@ -494,9 +499,7 @@ def get_speed(start, end, percent):
 
 
 
-def turn_function(degrees=90, ease=None, stoptype='brake',
-    startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B',
-    turntype='both'):
+def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B', turntype='both'):
 
     neg = degrees<0
 
@@ -564,7 +567,7 @@ def get_motor_by_letter(port):
 ###
 ### FUNCTION DEFINITIONS
 ###
-# (control_attachments.py) def control_attachments(start_speed=40, end_speed=100, ease=LinearInOut, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
+# (control_attachments.py) def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
 # (easing_functions.py) def LinearInOut(t):
 # (easing_functions.py) def QuadEaseInOut(t):
 # (easing_functions.py) def QuadEaseIn(t):
@@ -600,12 +603,12 @@ def get_motor_by_letter(port):
 # (gyro_straight.py) def hold(motor_pair):
 # (gyro_straight.py) def brake(motor_pair):
 # (gyro_straight.py) def sensed_black(letter_one = 'C', letter_two = 'D'):
-# (gyro_straight.py) def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode = brake, also_stop_if = lambda: False ):
+# (gyro_straight.py) def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
 # (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', ease = None, degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
 # (test_function.py) def test_function():
 # (turn_code.py) def get_speed(start, end, percent):
-# (turn_code.py) def turn_function(degrees=90, ease=None, stoptype='brake',
+# (turn_code.py) def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B', turntype='both'):
 # (utillity_functions.py) def get_motor_by_letter(port):
