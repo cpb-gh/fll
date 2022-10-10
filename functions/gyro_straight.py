@@ -50,7 +50,10 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
     else:
         return False
 
-def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode = brake, also_stop_if = lambda: False ):
+# NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
+def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
+    if easing is None:
+        easing = LinearInOut
     motor_pair = MotorPair(left_motor_letter, right_motor_letter)
     color = ColorSensor('C')
     motor_left = get_motor_by_letter(left_motor_letter)

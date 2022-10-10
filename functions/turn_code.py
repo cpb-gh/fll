@@ -7,9 +7,7 @@ def get_speed(start, end, percent):
 
 
 
-def turn_function(degrees=90, ease=None, stoptype='brake',
-    startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B',
-    turntype='both'):
+def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B', turntype='both'):
 
     neg = degrees<0
 
