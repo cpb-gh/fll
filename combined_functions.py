@@ -499,7 +499,7 @@ def get_speed(start, end, percent):
 
 
 
-def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B', turntype='both'):
+def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B', turntype='both'):
 
     neg = degrees<0
 
@@ -610,5 +610,5 @@ def get_motor_by_letter(port):
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
 # (test_function.py) def test_function():
 # (turn_code.py) def get_speed(start, end, percent):
-# (turn_code.py) def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B', turntype='both'):
+# (turn_code.py) def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B', turntype='both'):
 # (utillity_functions.py) def get_motor_by_letter(port):
