@@ -327,9 +327,7 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
 ###
 
 
-def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", 
-                 stopIf=None, stopMode='brake', ease = None, degrees=1000,
-                 motorLeftletter = 'A', motorRightletter='B'):
+def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', ease = None, degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
     
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
     motor1 = Motor(motorLeftletter)
@@ -603,7 +601,7 @@ def get_motor_by_letter(port):
 # (gyro_straight.py) def brake(motor_pair):
 # (gyro_straight.py) def sensed_black(letter_one = 'C', letter_two = 'D'):
 # (gyro_straight.py) def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = LinearInOut, motor_stop_mode = brake, also_stop_if = lambda: False ):
-# (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", 
+# (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', ease = None, degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
