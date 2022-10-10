@@ -6,9 +6,7 @@ def get_speed( low_speed, high_speed, pct ):
     return low_speed+((high_speed-low_speed)*pct)
 ### FUNCTION START
 
-def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", 
-                 stopIf=None, stopMode='brake', ease = None, degrees=1000,
-                 motorLeftletter = 'A', motorRightletter='B'):
+def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', ease = None, degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
     
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
     motor1 = Motor(motorLeftletter)
