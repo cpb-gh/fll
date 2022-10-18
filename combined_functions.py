@@ -499,7 +499,7 @@ def get_speed(start, end, percent):
 
 
 
-def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B', turntype='both'):
+def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both'):
 
     neg = degrees<0
 
@@ -517,11 +517,11 @@ def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=40, endspe
             keep_spinning = False
 
         if keep_spinning:
-            pct = degrees_now/degrees
-  
-            if ease is not None:
-                pct = ease(pct)
-            speed = get_speed (startspeed, endspeed, pct)
+            pct_degrees = degrees_now/degrees
+
+            if easing is not None:
+                pct_power = easing(pct_degrees)
+            speed = get_speed (startspeed, endspeed, pct_power)
 
             if turntype is 'both':
                 if neg:
@@ -610,5 +610,5 @@ def get_motor_by_letter(port):
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
 # (test_function.py) def test_function():
 # (turn_code.py) def get_speed(start, end, percent):
-# (turn_code.py) def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B', turntype='both'):
+# (turn_code.py) def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both'):
 # (utillity_functions.py) def get_motor_by_letter(port):
