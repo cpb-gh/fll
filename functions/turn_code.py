@@ -1,13 +1,10 @@
-
-from spike import PrimeHub,MotorPair
-
 ### FUNCTION START
 def get_speed(start, end, percent):
     return int ( start + (end - start)*percent )
 
 
 
-def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B', turntype='both'):
+def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both'):
 
     neg = degrees<0
 
@@ -25,11 +22,11 @@ def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=40, endspe
             keep_spinning = False
 
         if keep_spinning:
-            pct = degrees_now/degrees
-  
-            if ease is not None:
-                pct = ease(pct)
-            speed = get_speed (startspeed, endspeed, pct)
+            pct_degrees = degrees_now/degrees
+
+            if easing is not None:
+                pct_power = easing(pct_degrees)
+            speed = get_speed (startspeed, endspeed, pct_power)
 
             if turntype is 'both':
                 if neg:
@@ -53,6 +50,3 @@ def turn_function(degrees=90, ease=None, stoptype='brake', startspeed=40, endspe
         motors.stop()
 
 ### FUNCTION END
-
-turn_function (degrees=-90, ease=None, stoptype='brake',
-    startspeed=20, endspeed=40, motorletterleft='A', motorletterright='B', turntype='right')
