@@ -61,15 +61,13 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
     # motor_right.preset(0) will reset the relative degrees because otherwise the second time you run this function the relative degrees will start where it left off last time
     motor_right.preset(0)
     motor_left.preset(0)
-    speed, relative_degrees_right, absolute_degrees_right, pwm = motor_right.get()
-    speed, relative_degrees_left, absolute_degrees_left, pwm = motor_right.get()
     #easing stuff.
     pct_degrees = 0
     motor_pair.start_tank(start_power, start_power)
     #motor stop mode
     while True:
-        speed_right, relative_degrees_right, absolute_degrees_right, pwm = motor_right.get()
-        speed_left, relative_degrees_left, absolute_degrees_left, pwm = motor_left.get()
+        speed_right, relative_degrees_right, absolute_degrees_right, pwm_right = motor_right.get()
+        speed_left, relative_degrees_left, absolute_degrees_left, pwm_left = motor_left.get()
         speed = (speed_right + speed_left) / 2
         relative_degrees = (relative_degrees_right + relative_degrees_left) / 2
         pct_degrees = relative_degrees / degrees
@@ -79,5 +77,5 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
         if also_stop_if() == True or relative_degrees >= degrees:
             motor_stop_mode(motor_pair)
             return
-        ### FUNCTION END
+### FUNCTION END
 gyro_straight(degrees = 2000, start_power = 20, end_power = 100, easing = LinearInOut)
