@@ -60,21 +60,24 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
     motor_right = get_motor_by_letter(right_motor_letter)
     # motor_right.preset(0) will reset the relative degrees because otherwise the second time you run this function the relative degrees will start where it left off last time
     motor_right.preset(0)
-    speed, relative_degrees, absolute_degrees, pwm = motor_right.get()
+    motor_left.preset(0)
+    speed, relative_degrees_right, absolute_degrees_right, pwm = motor_right.get()
+    speed, relative_degrees_left, absolute_degrees_left, pwm = motor_right.get()
     #easing stuff.
     pct_degrees = 0
-    print("Start:", speed, relative_degrees, absolute_degrees, pwm)
     motor_pair.start_tank(start_power, start_power)
     #motor stop mode
     while True:
-        speed, relative_degrees, absolute_degrees, pwm = motor_right.get()
+        speed_right, relative_degrees_right, absolute_degrees_right, pwm = motor_right.get()
+        speed_left, relative_degrees_left, absolute_degrees_left, pwm = motor_left.get()
+        speed = (speed_right + speed_left) / 2
+        relative_degrees = (relative_degrees_right + relative_degrees_left) / 2
         pct_degrees = relative_degrees / degrees
         pct_power = easing(pct_degrees)
         act_power = int(pct_power * (end_power - start_power) + start_power)
         motor_pair.start_tank(act_power, act_power)
         if also_stop_if() == True or relative_degrees >= degrees:
-            # FIXME: look at the line_follow function and use those braking methods instead so we are consistent - we can use a MotorPair object here
             motor_stop_mode(motor_pair)
             return
-### FUNCTION END
+        ### FUNCTION END
 gyro_straight(degrees = 2000, start_power = 20, end_power = 100, easing = LinearInOut)
