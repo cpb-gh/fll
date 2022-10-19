@@ -6,8 +6,8 @@ def get_speed( low_speed, high_speed, pct ):
     return low_speed+((high_speed-low_speed)*pct)
 ### FUNCTION START
 
-def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', ease = None, degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
-    
+def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
+
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
     motor1 = Motor(motorLeftletter)
     motor2 = Motor(motorRightletter)
@@ -16,7 +16,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
     stop = False
     integral = 0
     lastError = 0
-    
+
     motor1.set_degrees_counted(0)
     motor2.set_degrees_counted(0)
     if stopMode is not None:
@@ -28,12 +28,10 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
         if motordeg >= degrees:
             stop = True
 
-        pct = motordeg/degrees 
-        #if ease is not None:
-        #    pct = ease( pct )
-        
+        pct = motordeg/degrees
+
         speedy = get_speed( Sspeed, Espeed, pct )
-        # print(  'speedy', speedy )
+        # print('speedy', speedy )
 
 
 
@@ -43,7 +41,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
         P_fix = error * 0.3
 
         integral = integral + error
-        
+
         I_fix = integral * 0.001
 
         derivative = error - lastError
@@ -56,6 +54,5 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
 
         if stop == True and stopMode is not None:
             motor_pair.stop()
- 
-### FUNCTION END
 
+### FUNCTION END
