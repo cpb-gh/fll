@@ -333,8 +333,8 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
 ###
 
 
-def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', ease = None, degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
-    
+def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
+
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
     motor1 = Motor(motorLeftletter)
     motor2 = Motor(motorRightletter)
@@ -343,7 +343,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
     stop = False
     integral = 0
     lastError = 0
-    
+
     motor1.set_degrees_counted(0)
     motor2.set_degrees_counted(0)
     if stopMode is not None:
@@ -355,12 +355,10 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
         if motordeg >= degrees:
             stop = True
 
-        pct = motordeg/degrees 
-        #if ease is not None:
-        #    pct = ease( pct )
-        
+        pct = motordeg/degrees
+
         speedy = get_speed( Sspeed, Espeed, pct )
-        # print(  'speedy', speedy )
+        # print('speedy', speedy )
 
 
 
@@ -370,7 +368,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
         P_fix = error * 0.3
 
         integral = integral + error
-        
+
         I_fix = integral * 0.001
 
         derivative = error - lastError
@@ -383,7 +381,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
 
         if stop == True and stopMode is not None:
             motor_pair.stop()
- 
+
 
 
 ###
@@ -605,7 +603,7 @@ def get_motor_by_letter(port):
 # (gyro_straight.py) def brake(motor_pair):
 # (gyro_straight.py) def sensed_black(letter_one = 'C', letter_two = 'D'):
 # (gyro_straight.py) def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
-# (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', ease = None, degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
+# (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
