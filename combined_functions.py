@@ -318,7 +318,7 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
         speed_right, relative_degrees_right, absolute_degrees_right, pwm_right = motor_right.get()
         speed_left, relative_degrees_left, absolute_degrees_left, pwm_left = motor_left.get()
         speed = (speed_right + speed_left) / 2
-        relative_degrees = (relative_degrees_right + relative_degrees_left) / 2
+        relative_degrees = (abs(relative_degrees_right) + abs(relative_degrees_left)) / 2
         pct_degrees = relative_degrees / degrees
         pct_power = easing(pct_degrees)
         act_power = int(pct_power * (end_power - start_power) + start_power)
