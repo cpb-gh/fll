@@ -1,7 +1,28 @@
-from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
+from spike import PrimeHub, MotionSensor, Motor, MotorPair, ColorSensor
 from spike.control import wait_for_seconds, wait_until, Timer
 import math
 import hub
+
+
+def BounceEaseIn(t):
+    return 1 - BounceEaseOut(1 - t)
+
+def BounceEaseOut(t):
+    if t < 4 / 11:
+        return 121 * t * t / 16
+    elif t < 8 / 11:
+        return (363 / 40.0 * t * t) - (99 / 10.0 * t) + 17 / 5.0
+    elif t < 9 / 10:
+        return (4356 / 361.0 * t * t) - (35442 / 1805.0 * t) + 16061 / 1805.0
+    return (54 / 5.0 * t * t) - (513 / 25.0 * t) + 268 / 25.0
+
+def BounceEaseInOut(t):
+    if t < 0.5:
+        return 0.5 * BounceEaseIn(t * 2)
+    return 0.5 * BounceEaseOut(t * 2 - 1) + 0.5
+### VERY IMPORTANT
+my_hub = PrimeHub()
+### VERY IMPORTANT
 
 def get_motor_by_letter(port):
     if port =='A':
@@ -25,7 +46,13 @@ def ExponentialEaseIn(t):
         return 0
     return math.pow(2, 10 * (t - 1))
 
+
+
 ### FUNCTION START
+
+### VERY IMPORTANT
+my_hub = PrimeHub()
+### VERY IMPORTANT
 
 def coast(motor_pair):
     motor_pair.set_stop_action('coast')
@@ -65,6 +92,8 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
     pct_degrees = 0
     motor_pair.start_tank(start_power, start_power)
     #motor stop mode
+    my_hub.motion_sensor.reset_yaw_angle()
+    print("======  starting now")
     while True:
         speed_right, relative_degrees_right, absolute_degrees_right, pwm_right = motor_right.get()
         speed_left, relative_degrees_left, absolute_degrees_left, pwm_left = motor_left.get()
@@ -73,9 +102,12 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
         pct_degrees = relative_degrees / degrees
         pct_power = easing(pct_degrees)
         act_power = int(pct_power * (end_power - start_power) + start_power)
-        motor_pair.start_tank(act_power, act_power)
+        yaw = my_hub.motion_sensor.get_yaw_angle()
+        print(yaw)
+        correction = int(yaw/2)
+        motor_pair.start_tank(act_power - correction, act_power + correction)
         if also_stop_if() == True or relative_degrees >= degrees:
             motor_stop_mode(motor_pair)
             return
 ### FUNCTION END
-gyro_straight(degrees = 2000, start_power = 20, end_power = 100, easing = LinearInOut)
+gyro_straight(degrees = 2500, start_power = 100, end_power = 50, easing = LinearInOut ,  left_motor_letter = 'A', right_motor_letter ='B')
