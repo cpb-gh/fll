@@ -21,7 +21,7 @@ def BounceEaseInOut(t):
         return 0.5 * BounceEaseIn(t * 2)
     return 0.5 * BounceEaseOut(t * 2 - 1) + 0.5
 ### VERY IMPORTANT
-my_hub = PrimeHub()
+prime_hub = PrimeHub()
 ### VERY IMPORTANT
 
 def get_motor_by_letter(port):
@@ -49,10 +49,6 @@ def ExponentialEaseIn(t):
 
 
 ### FUNCTION START
-
-### VERY IMPORTANT
-my_hub = PrimeHub()
-### VERY IMPORTANT
 
 def coast(motor_pair):
     motor_pair.set_stop_action('coast')
@@ -92,8 +88,7 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
     pct_degrees = 0
     motor_pair.start_tank(start_power, start_power)
     #motor stop mode
-    my_hub.motion_sensor.reset_yaw_angle()
-    print("======  starting now")
+    prime_hub.motion_sensor.reset_yaw_angle()
     while True:
         speed_right, relative_degrees_right, absolute_degrees_right, pwm_right = motor_right.get()
         speed_left, relative_degrees_left, absolute_degrees_left, pwm_left = motor_left.get()
@@ -102,8 +97,7 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
         pct_degrees = relative_degrees / degrees
         pct_power = easing(pct_degrees)
         act_power = int(pct_power * (end_power - start_power) + start_power)
-        yaw = my_hub.motion_sensor.get_yaw_angle()
-        print(yaw)
+        yaw = prime_hub.motion_sensor.get_yaw_angle()
         correction = int(yaw/2)
         motor_pair.start_tank(act_power - correction, act_power + correction)
         if also_stop_if() == True or relative_degrees >= degrees:
