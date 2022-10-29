@@ -75,6 +75,7 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
 def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
+    prime_hub = PrimeHub()
     if easing is None:
         easing = LinearInOut
     motor_pair = MotorPair(left_motor_letter, right_motor_letter)
