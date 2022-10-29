@@ -301,6 +301,7 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
 def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
+    prime_hub = PrimeHub()
     if easing is None:
         easing = LinearInOut
     motor_pair = MotorPair(left_motor_letter, right_motor_letter)
@@ -314,6 +315,7 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
     pct_degrees = 0
     motor_pair.start_tank(start_power, start_power)
     #motor stop mode
+    prime_hub.motion_sensor.reset_yaw_angle()
     while True:
         speed_right, relative_degrees_right, absolute_degrees_right, pwm_right = motor_right.get()
         speed_left, relative_degrees_left, absolute_degrees_left, pwm_left = motor_left.get()
@@ -322,7 +324,9 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
         pct_degrees = relative_degrees / degrees
         pct_power = easing(pct_degrees)
         act_power = int(pct_power * (end_power - start_power) + start_power)
-        motor_pair.start_tank(act_power, act_power)
+        yaw = prime_hub.motion_sensor.get_yaw_angle()
+        correction = int(yaw/2)
+        motor_pair.start_tank(act_power - correction, act_power + correction)
         if also_stop_if() == True or relative_degrees >= degrees:
             motor_stop_mode(motor_pair)
             return
