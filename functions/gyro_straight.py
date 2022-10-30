@@ -1,28 +1,9 @@
-from spike import PrimeHub, MotionSensor, Motor, MotorPair, ColorSensor
+
+
+from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until, Timer
 import math
 import hub
-
-
-def BounceEaseIn(t):
-    return 1 - BounceEaseOut(1 - t)
-
-def BounceEaseOut(t):
-    if t < 4 / 11:
-        return 121 * t * t / 16
-    elif t < 8 / 11:
-        return (363 / 40.0 * t * t) - (99 / 10.0 * t) + 17 / 5.0
-    elif t < 9 / 10:
-        return (4356 / 361.0 * t * t) - (35442 / 1805.0 * t) + 16061 / 1805.0
-    return (54 / 5.0 * t * t) - (513 / 25.0 * t) + 268 / 25.0
-
-def BounceEaseInOut(t):
-    if t < 0.5:
-        return 0.5 * BounceEaseIn(t * 2)
-    return 0.5 * BounceEaseOut(t * 2 - 1) + 0.5
-### VERY IMPORTANT
-prime_hub = PrimeHub()
-### VERY IMPORTANT
 
 def get_motor_by_letter(port):
     if port =='A':
@@ -45,8 +26,6 @@ def ExponentialEaseIn(t):
     if t == 0:
         return 0
     return math.pow(2, 10 * (t - 1))
-
-
 
 ### FUNCTION START
 
@@ -75,34 +54,49 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
 def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
-    prime_hub = PrimeHub()
+    #setting primehub and resseting the gyro
+    hub = PrimeHub()
+    hub.motion_sensor.reset_yaw_angle()
+    # tweak this value for better straighness
+    kp = 0.3
+    # if no ease, set easing to linier 
     if easing is None:
         easing = LinearInOut
+    #get a motor pair
     motor_pair = MotorPair(left_motor_letter, right_motor_letter)
-    color = ColorSensor('C')
     motor_left = get_motor_by_letter(left_motor_letter)
     motor_right = get_motor_by_letter(right_motor_letter)
-    # motor_right.preset(0) will reset the relative degrees because otherwise the second time you run this function the relative degrees will start where it left off last time
+    #we are going to count rotations and preset function is resetting the counter 
     motor_right.preset(0)
     motor_left.preset(0)
-    #easing stuff.
+    #how far we've moved. increment pct degrees as we roll
     pct_degrees = 0
+    #get moving
     motor_pair.start_tank(start_power, start_power)
-    #motor stop mode
-    prime_hub.motion_sensor.reset_yaw_angle()
-    while True:
-        speed_right, relative_degrees_right, absolute_degrees_right, pwm_right = motor_right.get()
-        speed_left, relative_degrees_left, absolute_degrees_left, pwm_left = motor_left.get()
-        speed = (speed_right + speed_left) / 2
+    keep_moving=true
+    while keep_moving is True:
+        #get information from each motor
+        #relative degree's are reset by preset above
+        speed_right, relative_degrees_right = motor_right.get()
+        speed_left, relative_degrees_left = motor_left.get()
+        #how far have we moved? average the left and right
         relative_degrees = (abs(relative_degrees_right) + abs(relative_degrees_left)) / 2
+        # how far in pct have we traveled??
         pct_degrees = relative_degrees / degrees
+        #pipe our pct through to get an eased pct through
         pct_power = easing(pct_degrees)
-        act_power = int(pct_power * (end_power - start_power) + start_power)
-        yaw = prime_hub.motion_sensor.get_yaw_angle()
-        correction = int(yaw/2)
-        motor_pair.start_tank(act_power - correction, act_power + correction)
+        # we are calculating the change of the power and then 
+        # finding how far we are from our start power to our end power
+        pwrchange = end_power - start_power
+        act_power = int( start_power + pct_power * pwrchange )
+        # getting the yaw angle
+        yaw = hub.motion_sensor.get_yaw_angle()
+        # scaling it with kp
+        correction = yaw*kp
+        # keep moving with the correction adustment
+        motor_pair.start_tank(int(act_power+correction), int(act_power-correction))
         if also_stop_if() == True or relative_degrees >= degrees:
             motor_stop_mode(motor_pair)
-            return
+            keep_moving = False
 ### FUNCTION END
-gyro_straight(degrees = 2500, start_power = 100, end_power = 50, easing = LinearInOut ,  left_motor_letter = 'A', right_motor_letter ='B')
+gyro_straight(degrees = 2000, start_power = 20, end_power = 100, easing = LinearInOut)
