@@ -23,7 +23,9 @@ def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endsp
 
         if keep_spinning:
             pct_degrees = degrees_now/degrees
+            pct_power = pct_degrees
 
+            
             if easing is not None:
                 pct_power = easing(pct_degrees)
             speed = get_speed (startspeed, endspeed, pct_power)
