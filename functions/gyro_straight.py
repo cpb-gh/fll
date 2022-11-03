@@ -20,9 +20,7 @@ def BounceEaseInOut(t):
     if t < 0.5:
         return 0.5 * BounceEaseIn(t * 2)
     return 0.5 * BounceEaseOut(t * 2 - 1) + 0.5
-### VERY IMPORTANT
-my_hub = PrimeHub()
-### VERY IMPORTANT
+
 
 def get_motor_by_letter(port):
     if port =='A':
@@ -50,10 +48,6 @@ def ExponentialEaseIn(t):
 
 ### FUNCTION START
 
-### VERY IMPORTANT
-my_hub = PrimeHub()
-### VERY IMPORTANT
-
 def coast(motor_pair):
     motor_pair.set_stop_action('coast')
     motor_pair.stop()
@@ -78,23 +72,34 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
         return False
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
-def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
+def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
     # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line 
     if easing is None:
         easing = LinearInOut
-    # in these lines we are definning the different aspects of our robot like the color_sensor and what port it is conected to.
-    motor_pair = MotorPair(left_motor_letter, right_motor_letter)
-    color = ColorSensor('C')
-    motor_left = get_motor_by_letter(left_motor_letter)
-    motor_right = get_motor_by_letter(right_motor_letter)
+
+    #swap letters if going backwards
+    go_fwd = degrees > 0
+    left_motor_fwd_letter = left_motor_letter
+    right_motor_fwd_letter = right_motor_letter
+    if not go_fwd:
+        left_motor_fwd_letter = right_motor_letter
+        right_motor_fwd_letter = left_motor_letter
+
+    motor_pair = MotorPair(left_motor_fwd_letter, right_motor_fwd_letter)
+    motor_left = get_motor_by_letter(left_motor_fwd_letter)
+    motor_right = get_motor_by_letter(right_motor_fwd_letter)
     # motor_right.preset(0) will reset the relative degrees because otherwise the second time you run this function the relative degrees will start where it left off last time
     motor_right.preset(0)
     motor_left.preset(0)
     pct_degrees = 0
+
+    #resetting things, setting up hub
+    my_hub = PrimeHub()
+    my_hub.motion_sensor.reset_yaw_angle()
     #right here we start our motor
     motor_pair.start_tank(start_power, start_power)
-    my_hub.motion_sensor.reset_yaw_angle()
-    # while true is the same as a forever loop and we just say "return" when we want to exsit   
+
+    # while true is the same as a forever loop and we just say "return" when we want to exit   
     while True:
         speed_right, relative_degrees_right, absolute_degrees_right, pwm_right = motor_right.get()
         speed_left, relative_degrees_left, absolute_degrees_left, pwm_left = motor_left.get()
@@ -103,16 +108,17 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
         pct_degrees = relative_degrees / degrees
         pct_power = easing(pct_degrees)
         act_power = int(pct_power * (end_power - start_power) + start_power)
-        # right now we are getting our yaw angle (our left and right) to see if we have veered of course then we correct our motors to turn.
-        # we only trun slighty by half of what we are of by as to not overshoot and then have to correct agian.
+        # right now we are getting our yaw angle (our left and right) to see if we have veered off course then we correct our motors to turn.
+        # we only turn slighty by KP of what we are of by as to not overshoot and then have to correct agian.
+        # KP VALUE adjusts how much our robot reacts.
+        KP = 0.5
         yaw = my_hub.motion_sensor.get_yaw_angle()
-        correction = int(yaw/2)
+        correction = int(yaw * KP)
         motor_pair.start_tank(act_power - correction, act_power + correction)
-        # when we arive at our destination we need to stop and exsit the loop.
-        if abs_degrees > degrees:
-            print (abs_degrees - degrees)
-        if also_stop_if() == True or relative_degrees >= degrees:
+        # when we arive at our destination we need to stop and exit the loop.
+        if also_stop_if() == True or relative_degrees >= abs(degrees):
             motor_stop_mode(motor_pair)
-            return
+            #return overshoot
+            return relative_degrees - abs(degrees)
 ### FUNCTION END
 gyro_straight(degrees = 2500, start_power = 100, end_power = 50, easing = LinearInOut ,  left_motor_letter = 'A', right_motor_letter ='B')
