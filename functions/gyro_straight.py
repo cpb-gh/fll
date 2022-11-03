@@ -72,7 +72,7 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
         return False
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
-def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
+def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
     # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line 
     if easing is None:
         easing = LinearInOut
@@ -109,11 +109,9 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
         pct_power = easing(pct_degrees)
         act_power = int(pct_power * (end_power - start_power) + start_power)
         # right now we are getting our yaw angle (our left and right) to see if we have veered off course then we correct our motors to turn.
-        # we only turn slighty by KP of what we are of by as to not overshoot and then have to correct agian.
-        # KP VALUE adjusts how much our robot reacts.
-        KP = 0.5
+        # we only turn slighty by kp (how much our robot reacts to being off course) of what we are of by as to not overshoot and then have to correct agian.
         yaw = my_hub.motion_sensor.get_yaw_angle()
-        correction = int(yaw * KP)
+        correction = int(yaw * kp)
         motor_pair.start_tank(act_power - correction, act_power + correction)
         # when we arive at our destination we need to stop and exit the loop.
         if also_stop_if() == True or relative_degrees >= abs(degrees):
