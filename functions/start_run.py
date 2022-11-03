@@ -13,7 +13,7 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             print ( 'Detected:', the_color)
             status_light.on('red')
             speaker.beep(60, delay)
-            #call run 1 
+            run_one()
         elif the_color == 'yellow':
             print ( 'Detected:', the_color)
             status_light.on('red')
