@@ -300,7 +300,7 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
         return False
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
-def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
+def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
     # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line 
     if easing is None:
         easing = LinearInOut
@@ -337,11 +337,9 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
         pct_power = easing(pct_degrees)
         act_power = int(pct_power * (end_power - start_power) + start_power)
         # right now we are getting our yaw angle (our left and right) to see if we have veered off course then we correct our motors to turn.
-        # we only turn slighty by KP of what we are of by as to not overshoot and then have to correct agian.
-        # KP VALUE adjusts how much our robot reacts.
-        KP = 0.5
+        # we only turn slighty by kp (how much our robot reacts to being off course) of what we are of by as to not overshoot and then have to correct agian.
         yaw = my_hub.motion_sensor.get_yaw_angle()
-        correction = int(yaw * KP)
+        correction = int(yaw * kp)
         motor_pair.start_tank(act_power - correction, act_power + correction)
         # when we arive at our destination we need to stop and exit the loop.
         if also_stop_if() == True or relative_degrees >= abs(degrees):
@@ -478,6 +476,16 @@ def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20
 
 
 ###
+### BEGIN FUNCTION FROM FILE: run_1.py
+###
+
+def run_one():
+    gyro_straight(degrees = 900, start_power = 70, end_power = 100, easing = ExponentialEaseOut, motor_stop_modde = brake)
+    gyro_straight(degrees = -100, start_power = 30, end_power = 30)
+    turn_function(degrees = -25, easing = None, stoptype = 'brake', startspeed = 60, endspeed = 50,  motorletterleft = 'A', motorletterright = 'B', turntype = 'both')
+
+
+###
 ### BEGIN FUNCTION FROM FILE: start_run.py
 ###
 
@@ -492,7 +500,7 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             print ( 'Detected:', the_color)
             status_light.on('red')
             speaker.beep(60, delay)
-            #call run 1 
+            run_one()
         elif the_color == 'yellow':
             print ( 'Detected:', the_color)
             status_light.on('red')
@@ -633,10 +641,11 @@ def get_motor_by_letter(port):
 # (gyro_straight.py) def hold(motor_pair):
 # (gyro_straight.py) def brake(motor_pair):
 # (gyro_straight.py) def sensed_black(letter_one = 'C', letter_two = 'D'):
-# (gyro_straight.py) def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
+# (gyro_straight.py) def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
 # (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
+# (run_1.py) def run_one():
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
 # (test_function.py) def test_function():
 # (turn_code.py) def get_speed(start, end, percent):
