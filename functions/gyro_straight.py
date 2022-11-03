@@ -72,14 +72,22 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
         return False
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
-def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
+def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, also_stop_if = lambda: False ):
     # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line 
     if easing is None:
         easing = LinearInOut
-    # in these lines we are definning the different aspects of our robot like the color_sensor and what port it is conected to.
-    motor_pair = MotorPair(left_motor_letter, right_motor_letter)
-    motor_left = get_motor_by_letter(left_motor_letter)
-    motor_right = get_motor_by_letter(right_motor_letter)
+
+    #swap letters if going backwards
+    go_fwd = degrees > 0
+    left_motor_fwd_letter = left_motor_letter
+    right_motor_fwd_letter = right_motor_letter
+    if not go_fwd:
+        left_motor_fwd_letter = right_motor_letter
+        right_motor_fwd_letter = left_motor_letter
+
+    motor_pair = MotorPair(left_motor_fwd_letter, right_motor_fwd_letter)
+    motor_left = get_motor_by_letter(left_motor_fwd_letter)
+    motor_right = get_motor_by_letter(right_motor_fwd_letter)
     # motor_right.preset(0) will reset the relative degrees because otherwise the second time you run this function the relative degrees will start where it left off last time
     motor_right.preset(0)
     motor_left.preset(0)
@@ -111,6 +119,6 @@ def gyro_straight( left_motor_letter='B', right_motor_letter='A', degrees=9000, 
         if also_stop_if() == True or relative_degrees >= abs(degrees):
             motor_stop_mode(motor_pair)
             #return overshoot
-            return abs(relative_degrees)-abs(degrees)
+            return relative_degrees - abs(degrees)
 ### FUNCTION END
 gyro_straight(degrees = 2500, start_power = 100, end_power = 50, easing = LinearInOut ,  left_motor_letter = 'A', right_motor_letter ='B')
