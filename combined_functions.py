@@ -479,7 +479,7 @@ def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20
 ### BEGIN FUNCTION FROM FILE: run_1.py
 ###
 
-def run_one():
+def zz_run_one():
     gyro_straight(degrees = 900, start_power = 70, end_power = 100, easing = ExponentialEaseOut, motor_stop_modde = brake)
     gyro_straight(degrees = -100, start_power = 30, end_power = 30)
     turn_function(degrees = -25, easing = None, stoptype = 'brake', startspeed = 60, endspeed = 50,  motorletterleft = 'A', motorletterright = 'B', turntype = 'both')
@@ -645,7 +645,7 @@ def get_motor_by_letter(port):
 # (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
-# (run_1.py) def run_one():
+# (run_1.py) def zz_run_one():
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
 # (test_function.py) def test_function():
 # (turn_code.py) def get_speed(start, end, percent):
