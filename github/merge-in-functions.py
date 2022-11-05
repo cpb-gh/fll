@@ -14,6 +14,11 @@ import math
 import time
 import hub
 """
+TRAILER="""
+
+start_run()
+
+"""
 
 with open(FUNCTIONS_FILE, 'w') as ff:
     ff.write(HEADER)
@@ -48,3 +53,4 @@ with open(FUNCTIONS_FILE, 'a') as ff:
     ff.write('\n###\n### FUNCTION DEFINITIONS\n###\n')
     for d in documentation_lines:
         ff.write(f'# {d}')
+    ff.write(TRAILER)
