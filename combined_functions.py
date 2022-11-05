@@ -500,17 +500,12 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             print ( 'Detected:', the_color)
             status_light.on('red')
             speaker.beep(60, delay)
-            run_one()
+            zz_run_one()
         elif the_color == 'yellow':
             print ( 'Detected:', the_color)
             status_light.on('red')
             speaker.beep(60, delay)
-            #call run 1
-        elif the_color == 'blue':
-            print ('Detected:', the_color)
-            status_light.on('blue')
-            speaker.beep(100, delay)
-            #call run 1
+            #zz_run_two()
         else:
             print ('not a run color:', the_color)
             status_light.off()
