@@ -1,5 +1,16 @@
 # fll
 This repository contains functions for use with the Prorito team's Lego Spike Prime robot.
+## Default port configuration
+These ports are the ones that default in each function - you can always pass different ones as arguments but you won't have to if you use these mappings:
+
+| Port  | Connected To       |
+| ----- | ------------------ |
+| A     | Left wheel         |
+| B     | Right wheel        |
+| C     | Right color sensor |
+| D     | Left color sensor  |
+| E     | Back attachment    |
+| F     | Front attachment   |
 
 ## Working on the competition runs
 The `functions` directory now contains a file named `run_1.py` which holds the `zz_run_one()` function (we prepend `zz` so that it ends up at the bottom of the combined_functions file for easier editing).  This function gets called by the `start_run()` function when the color sensors detect a red color.  `start_run()` automatically gets called from the [combined functions file](https://github.com/cpb-gh/fll/blob/main/combined_functions.py), so if you just copy that file into your Spike IDE you should be able to start coding inside `zz_run_one()` right away.
