@@ -27,26 +27,46 @@ def get_motor_by_letter( motor_letter ):
         return hub.port.F.motor
 
 ### FUNCTION START
-# NOTE - default parameters are evaluated at compile time so we need to set east to "None" by default and then if it is "None" set our actual default "LinearInOut"
+# NOTE - default parameters are evaluated at compile time
+# so we need to set ease to "None" by default
+#and then if it is "None" set our actual default "LinearInOut"
 def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
+    this_way = degrees_wanted>0
+    # if no ease, it sets the ease to linear
     if ease is None:
         ease = LinearInOut
     hub_motor = get_motor_by_letter( motor_letter )
+    #it is presetting the count to 0
     hub_motor.preset( 0 )
-    hub_motor.pwm( start_speed )
-
+    #set motor power to the start speed
+    if (this_way):
+        hub_motor.pwm( start_speed )
+    else:
+        hub_motor.pwm( -start_speed )
+    
     keep_spinning = True
 
     while keep_spinning:
-        speed, degrees_now, ignore_this, pwm = hub_motor.get( )
+        speed, degrees_now, x, xx = hub_motor.get( )
 
-        pct_to_degrees = degrees_now / degrees_wanted
-        print( 'degrees', degrees_now, pct_to_degrees )
+        pct_to_degrees = abs(degrees_now) / abs(degrees_wanted)
+        print (pct_to_degrees)
 
-        speed=start_speed+ease(pct_to_degrees)*(end_speed-start_speed)
-        hub_motor.pwm(speed)
+        #math for fanding speed based on how far we are.
+        speed = start_speed + ease(pct_to_degrees) * (end_speed - start_speed)
+        if this_way:
+            hub_motor.pwm(speed)
+        else:
+            hub_motor.pwm(-speed)
 
-        if degrees_now >= degrees_wanted or also_end_if==True:
+        #need to test multiple conditions
+        #1 to the left
+        #2 to the right
+        #3 if ouur passed in functions is true (if touching black)
+        if  ((degrees_now >= degrees_wanted and degrees_now > 0) or
+            (degrees_now<=degrees_wanted and degrees_now < 0) or
+            also_end_if==True):
+            print( degrees_now, 'all done' )
             keep_spinning = False
 
         if keep_spinning == False:
@@ -59,5 +79,4 @@ def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted
 ### FUNCTION END
 
 #call the function we just wrote
-control_attachments(motor_stop_mode='FLOAT', motor_letter='A', ease=ExponentialEaseInOut)
-control_attachments(motor_stop_mode='FLOAT', motor_letter='B', degrees_wanted=1000) 
+control_attachments( degrees_wanted=720, motor_letter='F')
