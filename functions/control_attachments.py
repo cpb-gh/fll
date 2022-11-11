@@ -63,8 +63,8 @@ def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted
         #1 to the left
         #2 to the right
         #3 if ouur passed in functions is true (if touching black)
-        if  ((degrees_now >= degrees_wanted and degrees_now > 0) or
-            (degrees_now<=degrees_wanted and degrees_now < 0) or
+        if  ((degrees_now >= degrees_wanted and this_way) or
+            (degrees_now<=degrees_wanted and not this_way) or
             also_end_if==True):
             print( degrees_now, 'all done' )
             keep_spinning = False
