@@ -4,7 +4,7 @@ def get_speed(start, end, percent):
 
 
 
-def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both'):
+def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both' ,also_end_if=None):
 
     neg = degrees<0
 
@@ -20,7 +20,8 @@ def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endsp
             keep_spinning = False
         elif not neg and degrees_now >= degrees :
             keep_spinning = False
-
+        if also_end_if is not None and also_end_if():
+            keep_spinning=False
         if keep_spinning:
             pct_degrees = degrees_now/degrees
             pct_power = pct_degrees
