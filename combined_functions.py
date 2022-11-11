@@ -314,14 +314,14 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
     color_sensor_two = ColorSensor(letter_two)
     color_one = color_sensor_one.get_color()
     color_two = color_sensor_two.get_color()
-    if color_one == 'black' and color_two == 'black':
+    if color_one == 'black' or color_two == 'black':
         return True
     else:
         return False
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
 def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
-    # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line 
+    # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line
     if easing is None:
         easing = LinearInOut
 
@@ -347,7 +347,7 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
     #right here we start our motor
     motor_pair.start_tank(start_power, start_power)
 
-    # while true is the same as a forever loop and we just say "return" when we want to exit   
+    # while true is the same as a forever loop and we just say "return" when we want to exit
     while True:
         speed_right, relative_degrees_right, absolute_degrees_right, pwm_right = motor_right.get()
         speed_left, relative_degrees_left, absolute_degrees_left, pwm_left = motor_left.get()
@@ -429,18 +429,33 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
 ###
 
 
-def line_square ( speed=40, color_to_hit='black',leftfirst=True, sensorletterleft='E', sensorletterright='D', motorletterleft='A', motorletterright='B' ):
+def line_square ( speed=40, color_to_hit='black', sensorletterleft='E', sensorletterright='D', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
     motors = MotorPair(motorletterleft, motorletterright)
     motors.set_stop_action('brake')
     sensorL = ColorSensor ( sensorletterleft )
     sensorR = ColorSensor ( sensorletterright )
+    sensor_left_color = sensorL.get_color()
+    sensor_right_color = sensorR.get_color()
+
+    if sensor_right_color != color_to_hit and sensor_left_color != color_to_hit:
+        print("neither sensor on color_to_hit, returning...")
+        return
+
+    if sensor_right_color == color_to_hit and sensor_left_color == color_to_hit:
+        print("both sensors on color_to_hit, returning...")
+        return
+
+    if sensor_left_color == color_to_hit:
+        leftfirst = True
+    else:
+        leftfirst = False
 
     def hit_colorL():
-        print( 'left', sensorL.get_color() )
+        # print( 'left', sensorL.get_color() )
         return sensorL.get_color() == color_to_hit
 
     def hit_colorR():
-        print( 'right', sensorR.get_color() )
+        # print( 'right', sensorR.get_color() )
         return sensorR.get_color() == color_to_hit
 
     if (leftfirst == True):
@@ -459,7 +474,8 @@ def line_square ( speed=40, color_to_hit='black',leftfirst=True, sensorletterlef
             print( 'B' )
             motors.start_tank (speed, 0)
             wait_until (hit_colorL)
-
+    ### depending on what angle you hit a black line you have to overshoot with the second sensor to square it
+    wait_for_seconds(overshoot_seconds)
     motors.stop()
 
 
@@ -704,7 +720,7 @@ def get_motor_by_letter(port):
 # (gyro_straight.py) def sensed_black(letter_one = 'C', letter_two = 'D'):
 # (gyro_straight.py) def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
 # (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
-# (line_square.py) def line_square ( speed=40, color_to_hit='black',leftfirst=True, sensorletterleft='E', sensorletterright='D', motorletterleft='A', motorletterright='B' ):
+# (line_square.py) def line_square ( speed=40, color_to_hit='black', sensorletterleft='E', sensorletterright='D', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
 # (run_1.py) def zz_run_one():
