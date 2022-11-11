@@ -66,14 +66,14 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
     color_sensor_two = ColorSensor(letter_two)
     color_one = color_sensor_one.get_color()
     color_two = color_sensor_two.get_color()
-    if color_one == 'black' and color_two == 'black':
+    if color_one == 'black' or color_two == 'black':
         return True
     else:
         return False
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
-def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
-    # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line 
+def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False, square_the_t = False ):
+    # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line
     if easing is None:
         easing = LinearInOut
 
@@ -99,7 +99,7 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
     #right here we start our motor
     motor_pair.start_tank(start_power, start_power)
 
-    # while true is the same as a forever loop and we just say "return" when we want to exit   
+    # while true is the same as a forever loop and we just say "return" when we want to exit
     while True:
         speed_right, relative_degrees_right, absolute_degrees_right, pwm_right = motor_right.get()
         speed_left, relative_degrees_left, absolute_degrees_left, pwm_left = motor_left.get()
