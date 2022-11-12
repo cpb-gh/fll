@@ -429,7 +429,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
 ###
 
 
-def line_square ( speed=40, color_to_hit='black', sensorletterleft='E', sensorletterright='D', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
+def line_square ( speed=40, color_to_hit='black', sensorletterleft='D', sensorletterright='C', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
     motors = MotorPair(motorletterleft, motorletterright)
     motors.set_stop_action('brake')
     sensorL = ColorSensor ( sensorletterleft )
@@ -720,7 +720,7 @@ def get_motor_by_letter(port):
 # (gyro_straight.py) def sensed_black(letter_one = 'C', letter_two = 'D'):
 # (gyro_straight.py) def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
 # (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
-# (line_square.py) def line_square ( speed=40, color_to_hit='black', sensorletterleft='E', sensorletterright='D', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
+# (line_square.py) def line_square ( speed=40, color_to_hit='black', sensorletterleft='D', sensorletterright='C', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
 # (run_1.py) def zz_run_one():
