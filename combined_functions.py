@@ -713,37 +713,6 @@ def zz_run_one():
 ### FUNCTION DEFINITIONS
 ###
 # (control_attachments.py) def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
-# (easing_functions.py) def LinearInOut(t):
-# (easing_functions.py) def QuadEaseInOut(t):
-# (easing_functions.py) def QuadEaseIn(t):
-# (easing_functions.py) def QuadEaseOut(t):
-# (easing_functions.py) def CubicEaseIn(t):
-# (easing_functions.py) def CubicEaseOut(t):
-# (easing_functions.py) def CubicEaseInOut(t):
-# (easing_functions.py) def QuarticEaseIn(t):
-# (easing_functions.py) def QuarticEaseOut(t):
-# (easing_functions.py) def QuarticEaseInOut(t):
-# (easing_functions.py) def QuinticEaseIn(t):
-# (easing_functions.py) def QuinticEaseOut(t):
-# (easing_functions.py) def QuinticEaseInOut(t):
-# (easing_functions.py) def SineEaseIn(t):
-# (easing_functions.py) def SineEaseOut(t):
-# (easing_functions.py) def SineEaseInOut(t):
-# (easing_functions.py) def CircularEaseIn(t):
-# (easing_functions.py) def CircularEaseOut(t):
-# (easing_functions.py) def CircularEaseInOut(t):
-# (easing_functions.py) def ExponentialEaseIn(t):
-# (easing_functions.py) def ExponentialEaseOut(t):
-# (easing_functions.py) def ExponentialEaseInOut(t):
-# (easing_functions.py) def ElasticEaseIn(t):
-# (easing_functions.py) def ElasticEaseOut(t):
-# (easing_functions.py) def ElasticEaseInOut(t):
-# (easing_functions.py) def BackEaseIn(t):
-# (easing_functions.py) def BackEaseOut(t):
-# (easing_functions.py) def BackEaseInOut(t):
-# (easing_functions.py) def BounceEaseIn(t):
-# (easing_functions.py) def BounceEaseOut(t):
-# (easing_functions.py) def BounceEaseInOut(t):
 # (gyro_straight.py) def coast(motor_pair):
 # (gyro_straight.py) def hold(motor_pair):
 # (gyro_straight.py) def brake(motor_pair):
@@ -752,9 +721,7 @@ def zz_run_one():
 # (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 # (line_square.py) def line_square ( speed=40, color_to_hit='black', sensorletterleft='D', sensorletterright='C', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
-# (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
-# (test_function.py) def test_function():
 # (turn_code.py) def get_speed(start, end, percent):
 # (turn_code.py) def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both' ,also_end_if=None):
 # (utillity_functions.py) def get_motor_by_letter(port):
