@@ -27,6 +27,7 @@ files=os.listdir('functions')
 files.sort()
 
 with open(FUNCTIONS_FILE, 'a') as ff:
+    skip_documentation = [ 'easing_functions.py', 'test_function.py', 'party_mode.py' ]
     documentation_lines = []
     for function_filename in files:
         write_to_combined_file = False
@@ -47,7 +48,7 @@ with open(FUNCTIONS_FILE, 'a') as ff:
                         write_to_combined_file = False
                     elif write_to_combined_file:
                         ff.write(line)
-                    if write_to_combined_file and line.startswith('def '):
+                    if write_to_combined_file and line.startswith('def ') and function_filename not in skip_documentation:
                         documentation_lines.append(f'({function_filename}) {line}')
                     line = function_file.readline()
     ff.write('\n###\n### FUNCTION DEFINITIONS\n###\n')
