@@ -552,45 +552,6 @@ def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20
 
 
 ###
-### BEGIN FUNCTION FROM FILE: run_1.py
-###
-
-def zz_run_one():
-    # #start fast, arrive slow -> expo-in-out!
-    # gyro_straight(degrees = 750, start_power = 70, end_power = 30, easing=ExponentialEaseInOut, motor_stop_mode = brake, kp=2)
-    # gyro_straight(degrees = -150, start_power = 30, end_power = 30, kp=0)
-    # #arm up quick, hit final position gently -> expo-in-out!
-    # control_attachments(start_speed=70, end_speed=70, degrees_wanted=-55, ease=ExponentialEaseInOut, motor_letter = 'F')
-    # #orient the robot towards windmill T
-    # turn_function(degrees = -40, easing = ExponentialEaseInOut, stoptype = 'brake', startspeed = 30, endspeed = 30, turntype = 'right')
-    
-    # #move toward the windmill
-    # gyro_straight(degrees = 750, start_power = 100, end_power = 30, kp=0.5, easing=ExponentialEaseInOut)
-    
-
-    # sensorR = ColorSensor ( 'C' )
-    # sensorL = ColorSensor ( 'D' )
-    # def hit_color_white():
-    #     return sensorL.get_color() == 'white' and sensorR.get_color() == "white"
-    # def hit_color_black():
-    #     return sensorL.get_color() == 'black'
-
-    # turn_function(degrees=60, easing=ExponentialEaseOut, stoptype=None, startspeed=25, endspeed=25, turntype = 'both')
-    # turn_function(degrees=30,stoptype='brake',startspeed=25,endspeed=25,turntype='both', also_end_if = hit_color_white)
-    #gyro_straight(degrees = 260, start_power = 40, end_power = 40, kp=0.5)
-    #now black of the tee
-    #gyro_straight(degrees=360, start_power = 20, end_power=20, also_stop_if = hit_color_black)
-
-    #line up on tee
-    #line_square ( speed=20, overshoot_seconds = .025 )
-    #put our wheels over the line
-    #gyro_straight(degrees = 120, start_power=20, end_power=20)
-    # turn_function(degrees = 80, easing = ExponentialEaseInOut, stoptype = 'brake', startspeed = 30, endspeed = 20, turntype = 'both')
-    control_attachments(start_speed=80, end_speed=80, degrees_wanted=1500, motor_letter = 'E')
-    control_attachments(start_speed=80, end_speed=80, degrees_wanted= -1500, motor_letter = 'E')
-
-
-###
 ### BEGIN FUNCTION FROM FILE: start_run.py
 ###
 
@@ -709,6 +670,45 @@ def get_motor_by_letter(port):
     if port == 'F':
         return hub.port.F.motor
 
+
+###
+### BEGIN FUNCTION FROM FILE: zz_run_one.py
+###
+
+def zz_run_one():
+    # #start fast, arrive slow -> expo-in-out!
+    # gyro_straight(degrees = 750, start_power = 70, end_power = 30, easing=ExponentialEaseInOut, motor_stop_mode = brake, kp=2)
+    # gyro_straight(degrees = -150, start_power = 30, end_power = 30, kp=0)
+    # #arm up quick, hit final position gently -> expo-in-out!
+    # control_attachments(start_speed=70, end_speed=70, degrees_wanted=-55, ease=ExponentialEaseInOut, motor_letter = 'F')
+    # #orient the robot towards windmill T
+    # turn_function(degrees = -40, easing = ExponentialEaseInOut, stoptype = 'brake', startspeed = 30, endspeed = 30, turntype = 'right')
+    
+    # #move toward the windmill
+    # gyro_straight(degrees = 750, start_power = 100, end_power = 30, kp=0.5, easing=ExponentialEaseInOut)
+    
+
+    # sensorR = ColorSensor ( 'C' )
+    # sensorL = ColorSensor ( 'D' )
+    # def hit_color_white():
+    #     return sensorL.get_color() == 'white' and sensorR.get_color() == "white"
+    # def hit_color_black():
+    #     return sensorL.get_color() == 'black'
+
+    # turn_function(degrees=60, easing=ExponentialEaseOut, stoptype=None, startspeed=25, endspeed=25, turntype = 'both')
+    # turn_function(degrees=30,stoptype='brake',startspeed=25,endspeed=25,turntype='both', also_end_if = hit_color_white)
+    #gyro_straight(degrees = 260, start_power = 40, end_power = 40, kp=0.5)
+    #now black of the tee
+    #gyro_straight(degrees=360, start_power = 20, end_power=20, also_stop_if = hit_color_black)
+
+    #line up on tee
+    #line_square ( speed=20, overshoot_seconds = .025 )
+    #put our wheels over the line
+    #gyro_straight(degrees = 120, start_power=20, end_power=20)
+    # turn_function(degrees = 80, easing = ExponentialEaseInOut, stoptype = 'brake', startspeed = 30, endspeed = 20, turntype = 'both')
+    control_attachments(start_speed=80, end_speed=80, degrees_wanted=1500, motor_letter = 'E')
+    control_attachments(start_speed=80, end_speed=80, degrees_wanted= -1500, motor_letter = 'E')
+
 ###
 ### FUNCTION DEFINITIONS
 ###
@@ -753,12 +753,12 @@ def get_motor_by_letter(port):
 # (line_square.py) def line_square ( speed=40, color_to_hit='black', sensorletterleft='D', sensorletterright='C', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (party_mode.py) def party_mode(color_sensor_one = 'C', color_sensor_two = 'D', party_length = 20):
-# (run_1.py) def zz_run_one():
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
 # (test_function.py) def test_function():
 # (turn_code.py) def get_speed(start, end, percent):
 # (turn_code.py) def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both' ,also_end_if=None):
 # (utillity_functions.py) def get_motor_by_letter(port):
+# (zz_run_one.py) def zz_run_one():
 
 
 start_run()
