@@ -1,7 +1,6 @@
-### FUNCTION START
-
 from spike.control import Timer
 
+### FUNCTION START
 def zz_run_one():
     sensorL = ColorSensor ( 'D' )
     sensorR = ColorSensor ( 'C' )
