@@ -16,13 +16,13 @@ def zz_run_one():
     gyro_straight(degrees = 350, start_power = 30, end_power = 30, kp=0.5)
     #snag the energies
     t = Timer()
-    control_attachments(start_speed=80, end_speed=80, degrees_wanted=1150, motor_letter = 'F')
+    control_attachments(start_speed=80, end_speed=80, degrees_wanted=1150, motor_letter = 'E')
     wait_for_seconds(.5)
-    control_attachments(start_speed=80, end_speed=80, degrees_wanted= -1150, motor_letter = 'F')
+    control_attachments(start_speed=80, end_speed=80, degrees_wanted= -1150, motor_letter = 'E')
     wait_for_seconds(.5)
-    control_attachments(start_speed=80, end_speed=80, degrees_wanted=1150, motor_letter = 'F')
+    control_attachments(start_speed=80, end_speed=80, degrees_wanted=1150, motor_letter = 'E')
     wait_for_seconds(.5)
-    control_attachments(start_speed=80, end_speed=80, degrees_wanted= -1150, motor_letter = 'F')
+    control_attachments(start_speed=80, end_speed=80, degrees_wanted= -1150, motor_letter = 'E')
     #back up from windmill
     gyro_straight(degrees=-205, start_power=20, end_power=20, easing=ExponentialEaseInOut, kp=0)
     #turn to the T near the car
