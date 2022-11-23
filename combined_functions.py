@@ -733,6 +733,15 @@ def zz_run_one():
     #wait_for_seconds(1)
     start_run()
 
+
+###
+### BEGIN FUNCTION FROM FILE: zz_run_two.py
+###
+
+def zz_run_two():
+    gyro_straight(degrees = 30000, start_power = 70, end_power = 30,)
+    ### Green. gets the dinsaur across the board.
+
 ###
 ### FUNCTION DEFINITIONS
 ###
@@ -751,6 +760,7 @@ def zz_run_one():
 # (utillity_functions.py) def get_motor_by_letter(port):
 # (zz_run_four.py) def zz_run_four():
 # (zz_run_one.py) def zz_run_one():
+# (zz_run_two.py) def zz_run_two():
 
 
 start_run()
