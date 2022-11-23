@@ -680,6 +680,16 @@ def get_motor_by_letter(port):
 
 
 ###
+### BEGIN FUNCTION FROM FILE: zz_run_four.py
+###
+
+def zz_run_four():
+    gyro_straight(start_power = 50, end_power = 50, degrees = 1350)
+    gyro_straight(start_power = 50, end_power = 50, degrees = -1350)
+    ### Blue. gets one energy and our model to the middle circle of the board
+
+
+###
 ### BEGIN FUNCTION FROM FILE: zz_run_one.py
 ###
 
@@ -739,6 +749,7 @@ def zz_run_one():
 # (turn_code.py) def get_speed(start, end, percent):
 # (turn_code.py) def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both' ,also_end_if=None):
 # (utillity_functions.py) def get_motor_by_letter(port):
+# (zz_run_four.py) def zz_run_four():
 # (zz_run_one.py) def zz_run_one():
 
 
