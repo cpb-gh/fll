@@ -16,8 +16,10 @@ import hub
 # NOTE - default parameters are evaluated at compile time
 # so we need to set ease to "None" by default
 #and then if it is "None" set our actual default "LinearInOut"
-def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
+def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C', timeout_seconds = 0):
     this_way = degrees_wanted>0
+    t = Timer()
+    t.reset()
     # if no ease, it sets the ease to linear
     if ease is None:
         ease = LinearInOut
@@ -29,12 +31,11 @@ def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted
         hub_motor.pwm( start_speed )
     else:
         hub_motor.pwm( -start_speed )
-    
+
     keep_spinning = True
 
     while keep_spinning:
         speed, degrees_now, x, xx = hub_motor.get( )
-
         pct_to_degrees = abs(degrees_now) / abs(degrees_wanted)
         print (pct_to_degrees)
 
@@ -54,6 +55,9 @@ def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted
             also_end_if==True):
             print( degrees_now, 'all done' )
             keep_spinning = False
+        ### at the start we start a timer and if that timer excedes timeout_seconds then it will stop.
+        if timeout_seconds != 0 and t.now() > timeout_seconds:
+            keep_spinning = False
 
         if keep_spinning == False:
             if motor_stop_mode == 'BRAKE':
@@ -62,6 +66,8 @@ def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted
                 hub_motor.float( )
             elif motor_stop_mode == 'HOLD':
                 hub_motor.hold( )
+
+
 
 
 ###
@@ -610,7 +616,7 @@ def get_speed(start, end, percent):
 
 
 
-def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both' ,also_end_if=None):
+def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0):
 
     neg = degrees<0
 
@@ -619,6 +625,8 @@ def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endsp
 
     hub.motion_sensor.reset_yaw_angle()
     motors = MotorPair(motorletterleft, motorletterright)
+    t = Timer()
+    t.reset()
     keep_spinning = True
     while keep_spinning == True:
         degrees_now= hub.motion_sensor.get_yaw_angle()
@@ -628,11 +636,16 @@ def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endsp
             keep_spinning = False
         if also_end_if is not None and also_end_if():
             keep_spinning=False
+
+        if timeout_seconds != 0 and t.now() > timeout_seconds:
+            keep_spinning = False
+
         if keep_spinning:
             pct_degrees = degrees_now/degrees
             pct_power = pct_degrees
-
             
+            
+
             if easing is not None:
                 pct_power = easing(pct_degrees)
             speed = get_speed (startspeed, endspeed, pct_power)
@@ -745,7 +758,7 @@ def zz_run_two():
 ###
 ### FUNCTION DEFINITIONS
 ###
-# (control_attachments.py) def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C'):
+# (control_attachments.py) def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C', timeout_seconds = 0):
 # (gyro_straight.py) def coast(motor_pair):
 # (gyro_straight.py) def hold(motor_pair):
 # (gyro_straight.py) def brake(motor_pair):
@@ -756,7 +769,7 @@ def zz_run_two():
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
 # (turn_code.py) def get_speed(start, end, percent):
-# (turn_code.py) def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both' ,also_end_if=None):
+# (turn_code.py) def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0):
 # (utillity_functions.py) def get_motor_by_letter(port):
 # (zz_run_four.py) def zz_run_four():
 # (zz_run_one.py) def zz_run_one():
