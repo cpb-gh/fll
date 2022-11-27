@@ -73,6 +73,7 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
 def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
+    print("=== Gyro straighting ", degrees)
     # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line
     if easing is None:
         easing = LinearInOut
@@ -117,6 +118,7 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
         if also_stop_if() == True or relative_degrees >= abs(degrees):
             motor_stop_mode(motor_pair)
             #return overshoot
+            print(" completed degrees ", relative_degrees, " wanted ", degrees)
             return relative_degrees - abs(degrees)
 ### FUNCTION END
 gyro_straight(degrees = 2500, start_power = 100, end_power = 50, easing = LinearInOut ,  left_motor_letter = 'A', right_motor_letter ='B')
