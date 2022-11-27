@@ -706,6 +706,7 @@ def zz_run_four():
 ### BEGIN FUNCTION FROM FILE: zz_run_one.py
 ###
 
+
 def zz_run_one():
     sensorL = ColorSensor ( 'D' )
     sensorR = ColorSensor ( 'C' )
@@ -731,12 +732,14 @@ def zz_run_one():
     wait_for_seconds(.5)
     control_attachments(start_speed=80, end_speed=80, degrees_wanted= -1150, motor_letter = 'E', timeout_seconds = 3)
     #back up from windmill
-    gyro_straight(degrees=-555, start_power=20, end_power=20, easing=ExponentialEaseInOut, kp=0)
+    gyro_straight(degrees=-255, start_power=20, end_power=20, easing=ExponentialEaseInOut, kp=0)
     # moves the arm to not hit the toy factory
     control_attachments(start_speed=80, end_speed=80, degrees_wanted=550, motor_letter = 'E',)
+    gyro_straight(degrees=-355, start_power=20, end_power=20, easing=ExponentialEaseInOut, kp=0)
     #move back to the base so we can prepare it to do something else
     turn_function(degrees=90, easing=ExponentialEaseOut, stoptype='brake', startspeed=50, endspeed=40, turntype = 'both')
-    gyro_straight(degrees = 1200, start_power = 60, end_power = 60, kp=0.5)
+    gyro_straight(degrees = 1300, start_power = 60, end_power = 60, kp=0.5)
+    control_attachments(start_speed=80, end_speed=80, degrees_wanted= -1150, motor_letter = 'E', timeout_seconds = 2)
 
 
 
