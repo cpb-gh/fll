@@ -3,8 +3,8 @@ def get_speed(start, end, percent):
     return int ( start + (end - start)*percent )
 
 
-
-def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A', motorletterright='B',turntype='both' ,also_end_if=None):
+def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0):
+    print("=== Turning ", degrees)
 
     neg = degrees<0
 
@@ -13,20 +13,31 @@ def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endsp
 
     hub.motion_sensor.reset_yaw_angle()
     motors = MotorPair(motorletterleft, motorletterright)
+    t = Timer()
+    t.reset()
     keep_spinning = True
     while keep_spinning == True:
         degrees_now= hub.motion_sensor.get_yaw_angle()
         if neg and degrees_now <= degrees :
+            print("  completed turn at degree ", degrees_now)
             keep_spinning = False
         elif not neg and degrees_now >= degrees :
+            print("  completed turn at degree ", degrees_now)
+            keep_spinning = False
+        if also_end_if is not None and also_end_if():
+            print("  completed with end_if at degree ", degrees_now)
+            keep_spinning=False
+
+        if timeout_seconds != 0 and t.now() > timeout_seconds:
             keep_spinning = False
         if also_end_if is not None and also_end_if():
             keep_spinning=False
         if keep_spinning:
             pct_degrees = degrees_now/degrees
             pct_power = pct_degrees
-
             
+            
+
             if easing is not None:
                 pct_power = easing(pct_degrees)
             speed = get_speed (startspeed, endspeed, pct_power)
