@@ -93,7 +93,7 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
     motor_right.preset(0)
     motor_left.preset(0)
     pct_degrees = 0
-    t = Timer() 
+    t = Timer()
     t.reset()
     #resetting things, setting up hub
     my_hub = PrimeHub()
@@ -116,13 +116,16 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
         correction = int(yaw * kp)
         motor_pair.start_tank(act_power - correction, act_power + correction)
         # when we arive at our destination we need to stop and exit the loop.
-        if timeout_seconds != 0 and t.now() > timeout_seconds: 
-            keep_spinning = False
+        if timeout_seconds != 0 and t.now() > timeout_seconds:
+            print(" timed out at degrees ", relative_degrees, " wanted ", degrees)
+            motor_stop_mode(motor_pair)
+            return relative_degrees - abs(degrees)
         if also_stop_if() == True or relative_degrees >= abs(degrees):
             motor_stop_mode(motor_pair)
             #return overshoot
             print(" completed degrees ", relative_degrees, " wanted ", degrees)
             return relative_degrees - abs(degrees)
+
 
 ### FUNCTION END
 gyro_straight(degrees = 2500, start_power = 100, end_power = 50, easing = LinearInOut ,  left_motor_letter = 'A', right_motor_letter ='B')
