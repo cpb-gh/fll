@@ -16,12 +16,6 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             speaker.beep(60, delay)
             zz_run_one()
             waiting_for_run = False
-        elif the_color == 'banana':
-            print ( 'Detected:', the_color)
-            status_light.on('yellow')
-            speaker.beep(60, delay)
-            zz_run_three()
-            waiting_for_run = False
         elif the_color == 'green':
             print ( 'Detected:', the_color)
             status_light.on('green')
@@ -34,8 +28,21 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             speaker.beep(60, delay)
             zz_run_four()
             waiting_for_run = False
+        elif the_color == 'violet':
+            print ( 'Detected:', the_color)
+            status_light.on('violet')
+            speaker.beep(60, delay)
+            zz_run_three()
+            waiting_for_run = False
+        elif the_color == 'cyan':
+            print ( 'Detected:', the_color)
+            status_light.on('cyan')
+            speaker.beep(60, delay)
+            zz_run_five()
+            waiting_for_run = False
         else:
             print ('not a run color:', the_color)
             status_light.off()
+
 ### FUNCTION END
 start_run(color_sensor_letter = 'D', delay = 5)
