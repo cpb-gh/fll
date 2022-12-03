@@ -3,7 +3,6 @@ def get_speed(start, end, percent):
     return int ( start + (end - start)*percent )
 
 
-
 def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0):
     print("=== Turning ", degrees)
 
@@ -31,7 +30,8 @@ def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endsp
 
         if timeout_seconds != 0 and t.now() > timeout_seconds:
             keep_spinning = False
-
+        if also_end_if is not None and also_end_if():
+            keep_spinning=False
         if keep_spinning:
             pct_degrees = degrees_now/degrees
             pct_power = pct_degrees

@@ -4,8 +4,9 @@ from math import *
 
 def get_speed( low_speed, high_speed, pct ):
     return low_speed+((high_speed-low_speed)*pct)
-### FUNCTION START
 
+
+### FUNCTION START
 def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
@@ -50,9 +51,8 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
 
         correction = P_fix+I_fix+D_fix
 
-        motor_pair.start_tank_at_power(int(speed-correction), int(speed+correction))
+        motor_pair.start_tank_at_power(int(speed+correction), int(speed-correction))
 
         if stop == True and stopMode is not None:
             motor_pair.stop()
-
 ### FUNCTION END
