@@ -380,7 +380,6 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
 ### BEGIN FUNCTION FROM FILE: line_follow.py
 ###
 
-
 def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
@@ -425,11 +424,10 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
 
         correction = P_fix+I_fix+D_fix
 
-        motor_pair.start_tank_at_power(int(speed-correction), int(speed+correction))
+        motor_pair.start_tank_at_power(int(speed+correction), int(speed-correction))
 
         if stop == True and stopMode is not None:
             motor_pair.stop()
-
 
 
 ###
@@ -618,7 +616,6 @@ def get_speed(start, end, percent):
     return int ( start + (end - start)*percent )
 
 
-
 def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0):
     print("=== Turning ", degrees)
 
@@ -646,7 +643,8 @@ def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endsp
 
         if timeout_seconds != 0 and t.now() > timeout_seconds:
             keep_spinning = False
-
+        if also_end_if is not None and also_end_if():
+            keep_spinning=False
         if keep_spinning:
             pct_degrees = degrees_now/degrees
             pct_power = pct_degrees
