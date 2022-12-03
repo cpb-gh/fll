@@ -1,3 +1,4 @@
+### FUNCTION START
 def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
@@ -46,3 +47,4 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
 
         if stop == True and stopMode is not None:
             motor_pair.stop()
+### FUNCTION END
