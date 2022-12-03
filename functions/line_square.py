@@ -8,6 +8,7 @@ from spike.control import wait_until
 ### FUNCTION START
 
 def line_square ( speed=40, color_to_hit='black', sensorletterleft='D', sensorletterright='C', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
+    print("=== line squaring")
     motors = MotorPair(motorletterleft, motorletterright)
     motors.set_stop_action('brake')
     sensorL = ColorSensor ( sensorletterleft )

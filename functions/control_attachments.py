@@ -31,6 +31,7 @@ def get_motor_by_letter( motor_letter ):
 # so we need to set ease to "None" by default
 #and then if it is "None" set our actual default "LinearInOut"
 def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C', timeout_seconds = 0):
+    print("=== Controlling attachment motor letter ", motor_letter, "degrees ", degrees_wanted)
     this_way = degrees_wanted>0
     t = Timer()
     t.reset()
@@ -51,7 +52,6 @@ def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted
     while keep_spinning:
         speed, degrees_now, x, xx = hub_motor.get( )
         pct_to_degrees = abs(degrees_now) / abs(degrees_wanted)
-        print (pct_to_degrees)
 
         #math for fanding speed based on how far we are.
         speed = start_speed + ease(pct_to_degrees) * (end_speed - start_speed)

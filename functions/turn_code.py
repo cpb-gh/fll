@@ -5,6 +5,7 @@ def get_speed(start, end, percent):
 
 
 def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0):
+    print("=== Turning ", degrees)
 
     neg = degrees<0
 
@@ -19,10 +20,13 @@ def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endsp
     while keep_spinning == True:
         degrees_now= hub.motion_sensor.get_yaw_angle()
         if neg and degrees_now <= degrees :
+            print("  completed turn at degree ", degrees_now)
             keep_spinning = False
         elif not neg and degrees_now >= degrees :
+            print("  completed turn at degree ", degrees_now)
             keep_spinning = False
         if also_end_if is not None and also_end_if():
+            print("  completed with end_if at degree ", degrees_now)
             keep_spinning=False
 
         if timeout_seconds != 0 and t.now() > timeout_seconds:
