@@ -766,8 +766,9 @@ def zz_run_one():
 ###
 
 def zz_run_two():
-    gyro_straight(degrees = 30000, start_power = 70, end_power = 30,)
-    ### Green. gets the dinsaur across the board.
+    ### dumps the energy into the toy factory
+    gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=900, start_power=50, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5)
+    gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=-1000, start_power=50, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5)
 
 ###
 ### FUNCTION DEFINITIONS
