@@ -17,6 +17,7 @@ import hub
 # so we need to set ease to "None" by default
 #and then if it is "None" set our actual default "LinearInOut"
 def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted=720, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='C', timeout_seconds = 0):
+    print("=== Controlling attachment motor letter ", motor_letter, "degrees ", degrees_wanted)
     this_way = degrees_wanted>0
     t = Timer()
     t.reset()
@@ -37,7 +38,6 @@ def control_attachments(start_speed=40, end_speed=100, ease=None, degrees_wanted
     while keep_spinning:
         speed, degrees_now, x, xx = hub_motor.get( )
         pct_to_degrees = abs(degrees_now) / abs(degrees_wanted)
-        print (pct_to_degrees)
 
         #math for fanding speed based on how far we are.
         speed = start_speed + ease(pct_to_degrees) * (end_speed - start_speed)
@@ -327,6 +327,7 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
 def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
+    print("=== Gyro straighting ", degrees)
     # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line
     if easing is None:
         easing = LinearInOut
@@ -371,6 +372,7 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
         if also_stop_if() == True or relative_degrees >= abs(degrees):
             motor_stop_mode(motor_pair)
             #return overshoot
+            print(" completed degrees ", relative_degrees, " wanted ", degrees)
             return relative_degrees - abs(degrees)
 
 
@@ -436,6 +438,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
 
 
 def line_square ( speed=40, color_to_hit='black', sensorletterleft='D', sensorletterright='C', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
+    print("=== line squaring")
     motors = MotorPair(motorletterleft, motorletterright)
     motors.set_stop_action('brake')
     sensorL = ColorSensor ( sensorletterleft )
@@ -617,6 +620,7 @@ def get_speed(start, end, percent):
 
 
 def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0):
+    print("=== Turning ", degrees)
 
     neg = degrees<0
 
@@ -631,10 +635,13 @@ def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endsp
     while keep_spinning == True:
         degrees_now= hub.motion_sensor.get_yaw_angle()
         if neg and degrees_now <= degrees :
+            print("  completed turn at degree ", degrees_now)
             keep_spinning = False
         elif not neg and degrees_now >= degrees :
+            print("  completed turn at degree ", degrees_now)
             keep_spinning = False
         if also_end_if is not None and also_end_if():
+            print("  completed with end_if at degree ", degrees_now)
             keep_spinning=False
 
         if timeout_seconds != 0 and t.now() > timeout_seconds:
