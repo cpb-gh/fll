@@ -712,6 +712,21 @@ def get_motor_by_letter(port):
 
 
 ###
+### BEGIN FUNCTION FROM FILE: zz_run_five.py
+###
+
+### this will put the mission model and energy into the middle and go to the right side of the board. This is the last run
+def zz_run_five():
+    gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=1640, start_power=100, end_power=40, easing = None, motor_stop_mode = brake, kp = 0.5, timeout_seconds = 0 )
+    control_attachments(start_speed=50, end_speed=50, ease=None, degrees_wanted=580, also_end_if = None, motor_stop_mode='BRAKE', motor_letter='F', timeout_seconds = 0)
+    gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=300, start_power=50, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, timeout_seconds = 0 )
+    turn_function(degrees=75, easing=None, stoptype='brake',startspeed=20, endspeed=20, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0)
+    gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=720, start_power=50, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, timeout_seconds = 0 )
+    turn_function(degrees=-45, easing=None, stoptype='brake',startspeed=20, endspeed=20, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0)
+    gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=1100, start_power=50, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, timeout_seconds = 0 )
+
+
+###
 ### BEGIN FUNCTION FROM FILE: zz_run_four.py
 ###
 
@@ -832,6 +847,7 @@ def zz_run_two():
 # (turn_code.py) def get_speed(start, end, percent):
 # (turn_code.py) def turn_function(degrees=90, easing=None, stoptype='brake',startspeed=40, endspeed=30, motorletterleft='A',also_end_if = None, motorletterright='B',turntype='both', timeout_seconds = 0):
 # (utillity_functions.py) def get_motor_by_letter(port):
+# (zz_run_five.py) def zz_run_five():
 # (zz_run_four.py) def zz_run_four():
 # (zz_run_one.py) def zz_run_one():
 # (zz_run_three.py) def zz_run_three():
