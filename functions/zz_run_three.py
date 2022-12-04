@@ -1,5 +1,5 @@
-### START FUNCTION
-def zz_run_three()
+### FUNCTION START
+def zz_run_three():
     sensorL = ColorSensor ( 'D' )
     sensorR = ColorSensor ( 'C' )
     def see_black_either():
@@ -38,4 +38,4 @@ def zz_run_three()
 
     # turn_function(degrees=-15, startspeed=50, endspeed=50)
     gyro_straight(degrees=1000, start_power=40, end_power=40)
-### END FUNCTION
+### FUNCTION END
