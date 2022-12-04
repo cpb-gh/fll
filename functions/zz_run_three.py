@@ -1,5 +1,5 @@
 ### START FUNCTION
-def power_plant_high_5():
+def zz_run_three()
     sensorL = ColorSensor ( 'D' )
     sensorR = ColorSensor ( 'C' )
     def see_black_either():
@@ -30,7 +30,6 @@ def power_plant_high_5():
     #and back up to let the energies out
     wait_for_seconds(1)
     gyro_straight(degrees=-360, start_power=40, end_power=40, kp=4)
-
     for i in range(2):
         gyro_straight(degrees=-180, start_power=40, end_power=40, kp=2)
         gyro_straight(degrees=190, start_power=40, end_power=40,kp=2)

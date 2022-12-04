@@ -72,7 +72,7 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
         return False
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
-def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
+def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False, timeout_seconds = 0 ):
     print("=== Gyro straighting ", degrees)
     # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line
     if easing is None:
@@ -93,7 +93,8 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
     motor_right.preset(0)
     motor_left.preset(0)
     pct_degrees = 0
-
+    t = Timer()
+    t.reset()
     #resetting things, setting up hub
     my_hub = PrimeHub()
     my_hub.motion_sensor.reset_yaw_angle()
@@ -115,10 +116,16 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
         correction = int(yaw * kp)
         motor_pair.start_tank(act_power - correction, act_power + correction)
         # when we arive at our destination we need to stop and exit the loop.
+        if timeout_seconds != 0 and t.now() > timeout_seconds:
+            print(" timed out at degrees ", relative_degrees, " wanted ", degrees)
+            motor_stop_mode(motor_pair)
+            return relative_degrees - abs(degrees)
         if also_stop_if() == True or relative_degrees >= abs(degrees):
             motor_stop_mode(motor_pair)
             #return overshoot
             print(" completed degrees ", relative_degrees, " wanted ", degrees)
             return relative_degrees - abs(degrees)
+
+
 ### FUNCTION END
 gyro_straight(degrees = 2500, start_power = 100, end_power = 50, easing = LinearInOut ,  left_motor_letter = 'A', right_motor_letter ='B')

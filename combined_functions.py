@@ -326,7 +326,7 @@ def sensed_black(letter_one = 'C', letter_two = 'D'):
         return False
 
 # NOTE - default parameters are evaluated at compile time so we need to set easing to "None" by default and then if it is "None" set our actual default "LinearInOut"
-def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
+def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False, timeout_seconds = 0 ):
     print("=== Gyro straighting ", degrees)
     # if the user did not specify what easing function they wanted to use then it will just do LinerInOut; a straight line
     if easing is None:
@@ -347,7 +347,8 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
     motor_right.preset(0)
     motor_left.preset(0)
     pct_degrees = 0
-
+    t = Timer()
+    t.reset()
     #resetting things, setting up hub
     my_hub = PrimeHub()
     my_hub.motion_sensor.reset_yaw_angle()
@@ -369,11 +370,17 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
         correction = int(yaw * kp)
         motor_pair.start_tank(act_power - correction, act_power + correction)
         # when we arive at our destination we need to stop and exit the loop.
+        if timeout_seconds != 0 and t.now() > timeout_seconds:
+            print(" timed out at degrees ", relative_degrees, " wanted ", degrees)
+            motor_stop_mode(motor_pair)
+            return relative_degrees - abs(degrees)
         if also_stop_if() == True or relative_degrees >= abs(degrees):
             motor_stop_mode(motor_pair)
             #return overshoot
             print(" completed degrees ", relative_degrees, " wanted ", degrees)
             return relative_degrees - abs(degrees)
+
+
 
 
 ###
@@ -576,12 +583,6 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             speaker.beep(60, delay)
             zz_run_one()
             waiting_for_run = False
-        elif the_color == 'banana':
-            print ( 'Detected:', the_color)
-            status_light.on('yellow')
-            speaker.beep(60, delay)
-            zz_run_three()
-            waiting_for_run = False
         elif the_color == 'green':
             print ( 'Detected:', the_color)
             status_light.on('green')
@@ -594,9 +595,22 @@ def start_run( color_sensor_letter = 'C', delay = 1):
             speaker.beep(60, delay)
             zz_run_four()
             waiting_for_run = False
+        elif the_color == 'violet':
+            print ( 'Detected:', the_color)
+            status_light.on('violet')
+            speaker.beep(60, delay)
+            zz_run_three()
+            waiting_for_run = False
+        elif the_color == 'cyan':
+            print ( 'Detected:', the_color)
+            status_light.on('cyan')
+            speaker.beep(60, delay)
+            zz_run_five()
+            waiting_for_run = False
         else:
             print ('not a run color:', the_color)
             status_light.off()
+
 
 
 ###
@@ -749,12 +763,19 @@ def zz_run_one():
 
 
 ###
+### BEGIN FUNCTION FROM FILE: zz_run_three.py
+###
+
+
+
+###
 ### BEGIN FUNCTION FROM FILE: zz_run_two.py
 ###
 
 def zz_run_two():
-    gyro_straight(degrees = 30000, start_power = 70, end_power = 30,)
-    ### Green. gets the dinsaur across the board.
+    ### dumps the energy into the toy factory
+    gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=900, start_power=50, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5)
+    gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=-1000, start_power=50, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5)
 
 ###
 ### FUNCTION DEFINITIONS
@@ -764,7 +785,7 @@ def zz_run_two():
 # (gyro_straight.py) def hold(motor_pair):
 # (gyro_straight.py) def brake(motor_pair):
 # (gyro_straight.py) def sensed_black(letter_one = 'C', letter_two = 'D'):
-# (gyro_straight.py) def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False ):
+# (gyro_straight.py) def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False, timeout_seconds = 0 ):
 # (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
 # (line_square.py) def line_square ( speed=40, color_to_hit='black', sensorletterleft='D', sensorletterright='C', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
