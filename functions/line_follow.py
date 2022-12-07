@@ -7,7 +7,7 @@ def get_speed( low_speed, high_speed, pct ):
 
 
 ### FUNCTION START
-def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
+def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B', kp=0.4):
 
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
     motor1 = Motor(motorLeftletter)
@@ -39,7 +39,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
         speed = speedy
 
         error = color.get_reflected_light() - 50
-        P_fix = error * 0.3
+        P_fix = error * kp
 
         integral = integral + error
 
