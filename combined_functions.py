@@ -387,7 +387,7 @@ def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, 
 ### BEGIN FUNCTION FROM FILE: line_follow.py
 ###
 
-def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
+def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B', kp=0.4):
 
     motor_pair = MotorPair(motorLeftletter, motorRightletter)
     motor1 = Motor(motorLeftletter)
@@ -419,7 +419,7 @@ def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='
         speed = speedy
 
         error = color.get_reflected_light() - 50
-        P_fix = error * 0.3
+        P_fix = error * kp
 
         integral = integral + error
 
@@ -865,7 +865,7 @@ def zz_run_two():
 # (gyro_straight.py) def brake(motor_pair):
 # (gyro_straight.py) def sensed_black(letter_one = 'C', letter_two = 'D'):
 # (gyro_straight.py) def gyro_straight( left_motor_letter='A', right_motor_letter='B', degrees=9000, start_power=100, end_power=50, easing = None, motor_stop_mode = brake, kp = 0.5, also_stop_if = lambda: False, timeout_seconds = 0 ):
-# (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B'):
+# (line_follow.py) def line_follow( Sspeed=40, Espeed=20, sensorLetter="D", stopIf=None, stopMode='brake', degrees=1000, motorLeftletter = 'A', motorRightletter='B', kp=0.4):
 # (line_square.py) def line_square ( speed=40, color_to_hit='black', sensorletterleft='D', sensorletterright='C', motorletterleft='A', motorletterright='B', overshoot_seconds = 0 ):
 # (motor_rotation_functions.py) def motor_to_degrees(degrees=90, power=100, port='A'):
 # (start_run.py) def start_run( color_sensor_letter = 'C', delay = 1):
