@@ -40,14 +40,7 @@ def zz_run_three():
     control_attachments(motor_letter="E", start_speed=40, end_speed=40, degrees_wanted=1600)
     gyro_straight(degrees=-200, start_power=30, end_power=30, kp=1)
     turn_function(degrees=-40, startspeed=40, endspeed=40, timeout_seconds=1, easing=ExponentialEaseOut, turntype="both")
+    gyro_straight(degrees=600, start_power=30, end_power=30, kp=1, also_stop_if = sensed_black)
 
-    # for i in range(2):
-    #     gyro_straight(degrees=-180, start_power=40, end_power=40, kp=2)
-    #     gyro_straight(degrees=190, start_power=40, end_power=40,kp=2)
-    # gyro_straight(degrees=-400, kp=2, start_power=40, end_power=40)
-    # turn_function(degrees=-45, startspeed=40, endspeed=40, turntype="left")
-
-    # # turn_function(degrees=-15, startspeed=50, endspeed=50)
-    # gyro_straight(degrees=1000, start_power=40, end_power=40)
 
 ### FUNCTION END
