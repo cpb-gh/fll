@@ -797,6 +797,7 @@ def zz_run_one():
 ### BEGIN FUNCTION FROM FILE: zz_run_three.py
 ###
 
+
 def zz_run_three():
     sensorL = ColorSensor ( 'D' )
     sensorR = ColorSensor ( 'C' )
@@ -807,38 +808,42 @@ def zz_run_three():
     def see_black_right():
         return sensorR.get_color() is 'black'
     def see_white_left():
+        return sensorL.get_color() is 'white'
+    def see_white_either():
+        return sensorR.get_color() is 'white'or sensorL.get_color() is 'white'
+    def see_white_right():
         return sensorR.get_color() is 'white'
 
-    # from start position, move to middle of field
-    gyro_straight(degrees=1700, start_power=90, end_power=60, easing=ExponentialEaseInOut, kp=1)
+    #from start position, move to middle of field
+    gyro_straight(degrees=1700, start_power=40, end_power=40, kp=0.5)
     wait_for_seconds(1)
-
-    #turn to get distance from the power plant
-    turn_function(degrees=10, startspeed=40, endspeed=30)
+    turn_function(degrees=30, startspeed=30, endspeed=30)
     wait_for_seconds(1)
-
-    #move forward till black
-    gyro_straight(degrees=360, start_power=30, end_power=30, easing=ExponentialEaseInOut, also_stop_if=see_black_either)
+    gyro_straight(degrees=500, timeout_seconds=2, start_power=60, end_power=60)
     wait_for_seconds(1)
-    #keep on going
-    gyro_straight(degrees= 110, start_power=40, end_power=40)
-    control_attachments(motor_letter="E",start_speed=40, end_speed=40, degrees_wanted=-1400)
+    turn_function(degrees=25, startspeed=30, endspeed=30)
     wait_for_seconds(1)
-    #now, swing your tail to unlock power plant energies
-    turn_function(degrees=90, startspeed=40, endspeed=40, timeout_seconds=1, easing=ExponentialEaseOut, turntype="both")
-    #and back up to let the energies out
-    wait_for_seconds(1)
-    gyro_straight(degrees=-450, start_power=80, end_power=60, kp=1)
-    #forward to the high five!
-    gyro_straight(degrees=500, start_power=40, end_power=40, kp=1)
-    #turn_function(degrees=45,startspeed=40,endspeed=40,also_end_if=see_black_left)
-    wait_for_seconds(1)
-    gyro_straight(degrees=380)
-    control_attachments(motor_letter="E", start_speed=40, end_speed=40, degrees_wanted=-1000)
-    control_attachments(motor_letter="E", start_speed=40, end_speed=40, degrees_wanted=1600)
-    gyro_straight(degrees=-200, start_power=30, end_power=30, kp=1)
-    turn_function(degrees=-40, startspeed=40, endspeed=40, timeout_seconds=1, easing=ExponentialEaseOut, turntype="both")
-    gyro_straight(degrees=600, start_power=30, end_power=30, kp=1, also_stop_if = sensed_black)
+    gyro_straight(degrees=700, start_power=70, end_power=40, kp=0.5, timeout_seconds=2)
+    gyro_straight(degrees=-150, start_power=40, end_power=40)
+    control_attachments(motor_letter="E", start_speed=100, end_speed=100, degrees_wanted=-2700)
+    control_attachments(motor_letter="E", start_speed=100, end_speed=100, degrees_wanted=2700)
+    gyro_straight(degrees=-100, start_power=40, end_power=40)
+    # knock out water
+    turn_function(degrees=-45, startspeed=30, endspeed=30)
+    #line back up
+    turn_function(degrees=45, startspeed=30, endspeed=30)
+    # keep backin up
+    gyro_straight(degrees=-50, start_power=40, end_power=40)
+   
+    turn_function(degrees=-45, startspeed=30, endspeed=30)
+    gyro_straight(degrees=1000, start_power=40, end_power=40, also_stop_if=see_black_left)
+    line_follow(degrees=600, stopIf=see_black_right)
+    for i in range(3):
+        gyro_straight(degrees=360, start_power=40, end_power=40, timeout_seconds=1)
+        gyro_straight(degrees=-180, start_power=40, end_power=40, timeout_seconds=1)
+    turn_function(degrees=-45, startspeed=30, endspeed=30)
+    gyro_straight(degrees=1800, start_power=100, end_power=100)
+    control_attachments(motor_letter="E", start_speed=100, end_speed=100, degrees_wanted=-2700)
 
 
 
